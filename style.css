@@ -1,0 +1,233 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #0f1419;
+  color: #e7e9ea;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.45;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+input { font-family: inherit; }
+
+/* ---------- шапка ---------- */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(15,20,25,.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid #2f3336;
+  padding: 10px 20px;
+  display: flex; align-items: center; gap: 14px;
+}
+
+.logo {
+  font-family: Georgia, serif;
+  font-size: 22px; font-weight: 700;
+  color: #c0392b; white-space: nowrap;
+}
+.logo span { color: #e7e9ea; }
+
+.search {
+  flex: 1; max-width: 400px;
+  background: #202327;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 8px 16px;
+  color: #e7e9ea;
+  font-size: 14px;
+  outline: none;
+  transition: .15s;
+}
+.search::placeholder { color: #71767b; }
+.search:focus { border-color: #1d9bf0; background: #0f1419; }
+
+/* ---------- сетка ---------- */
+.wrap {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 600px) 290px;
+  gap: 20px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 20px 20px 60px;
+  justify-content: center;
+}
+
+.side-block {
+  background: #16181c;
+  border: 1px solid #2f3336;
+  border-radius: 16px;
+  padding: 10px 8px;
+  margin-bottom: 14px;
+}
+.side-title {
+  font-size: 11.5px; color: #71767b;
+  text-transform: uppercase; letter-spacing: .8px;
+  padding: 6px 12px 10px; font-weight: 600;
+}
+
+/* ---------- аккаунты ---------- */
+.user-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: 10px;
+  cursor: pointer; transition: .15s;
+  user-select: none;
+}
+.user-row:hover, .user-row.on { background: #1e2126; }
+.user-row.on .u-name { color: #c0392b; }
+
+.avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  flex-shrink: 0; position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: #fff; font-size: 16px;
+}
+.avatar img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+.u-info { min-width: 0; flex: 1; }
+.u-name {
+  font-weight: 600; font-size: 14px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.u-nick { color: #71767b; font-size: 12.5px; }
+.u-badge { color: #1d9bf0; font-size: 12px; }
+
+/* ---------- о проекте ---------- */
+.about p { font-size: 13px; color: #b0b3b8; padding: 0 6px 8px; line-height: 1.5; }
+.about b { color: #e7e9ea; }
+.tags { padding: 0 6px 6px; }
+.tags span {
+  display: inline-block; background: #1e2126; color: #c0392b;
+  padding: 1px 8px; border-radius: 999px;
+  font-size: 11.5px; margin: 3px 3px 0 0;
+}
+
+/* ---------- лента ---------- */
+.feed-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 4px 12px;
+  border-bottom: 1px solid #2f3336;
+  margin-bottom: 4px;
+}
+.feed-head h2 { font-size: 17px; font-weight: 700; }
+#resetBtn {
+  border: 1px solid #2f3336; color: #71767b;
+  padding: 5px 12px; border-radius: 999px; font-size: 12.5px;
+  transition: .15s;
+}
+#resetBtn:hover { border-color: #c0392b; color: #c0392b; }
+
+.post {
+  display: flex; gap: 12px;
+  padding: 14px 6px;
+  border-bottom: 1px solid #2f3336;
+}
+.post:last-child { border-bottom: none; }
+.post-body { flex: 1; min-width: 0; }
+
+.post-head {
+  display: flex; align-items: baseline; gap: 5px;
+  flex-wrap: wrap; font-size: 14.5px;
+}
+.p-name { font-weight: 700; }
+.p-nick, .p-time, .p-dot { color: #71767b; font-size: 13.5px; }
+
+.post-text {
+  margin-top: 3px; font-size: 15px;
+  word-wrap: break-word; white-space: pre-wrap;
+}
+.post-text .h { color: #1d9bf0; }
+
+.post-actions { display: flex; gap: 36px; margin-top: 10px; margin-left: -6px; }
+.act {
+  color: #71767b; font-size: 13.5px;
+  display: flex; align-items: center; gap: 6px;
+  padding: 3px 6px; border-radius: 999px;
+  transition: .15s;
+}
+.act span { min-width: 12px; }
+.act-reply:hover  { color: #1d9bf0; background: rgba(29,155,240,.1); }
+.act-repost:hover { color: #00ba7c; background: rgba(0,186,124,.1); }
+.act-like:hover   { color: #f91880; background: rgba(249,24,128,.1); }
+.act-repost.on { color: #00ba7c; }
+.act-like.on   { color: #f91880; }
+
+/* ---------- тренды ---------- */
+.trend { padding: 9px 12px; border-radius: 10px; transition: .15s; }
+.trend:hover { background: #1e2126; }
+.trend .cat { font-size: 12px; color: #71767b; }
+.trend .tag { font-weight: 700; font-size: 14px; margin-top: 1px; }
+.trend .cnt { font-size: 12px; color: #71767b; margin-top: 2px; }
+
+.empty {
+  text-align: center; color: #71767b;
+  padding: 50px 20px; font-size: 14px;
+}
+
+/* ---------- планшет ---------- */
+@media (max-width: 1080px) {
+  .wrap { grid-template-columns: 230px minmax(0, 1fr); }
+  .side-right { display: none; }
+}
+
+/* ---------- телефон ---------- */
+@media (max-width: 760px) {
+  .topbar { padding: 8px 12px; gap: 10px; }
+  .logo { font-size: 19px; }
+  .search { padding: 7px 14px; font-size: 13.5px; }
+
+  .wrap {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 0 0 40px;
+  }
+
+  /* аккаунты — горизонтальной лентой сверху */
+  .side-left { order: -1; }
+  .side-left .about { display: none; }
+
+  .side-left .accounts {
+    margin: 0;
+    border: none;
+    border-bottom: 1px solid #2f3336;
+    border-radius: 0;
+    padding: 10px 8px;
+    display: flex;
+    overflow-x: auto;
+    gap: 4px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .side-left .accounts::-webkit-scrollbar { display: none; }
+  .side-left .accounts .side-title { display: none; }
+
+  .side-left .accounts .user-row {
+    flex-direction: column;
+    min-width: 68px;
+    padding: 6px 4px;
+    gap: 5px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .side-left .accounts .avatar { width: 44px; height: 44px; font-size: 17px; }
+  .side-left .accounts .u-nick { display: none; }
+  .side-left .accounts .u-name { font-size: 11.5px; }
+  .side-left .accounts .u-info { width: 100%; }
+
+  .side-right { display: none; }
+
+  .feed-head { padding: 12px 14px 10px; margin: 0; }
+  .feed-head h2 { font-size: 16px; }
+
+  .post { padding: 12px 14px; gap: 10px; }
+  .post-text { font-size: 14.5px; }
+  .post-actions { gap: 28px; margin-left: -8px; }
+  .act { padding: 6px 8px; font-size: 13px; }
+}
