@@ -1,9 +1,9 @@
 // ---- аккаунты ----
 var users = {
-  boyan:      { name: "Боян Вещий",         nick: "@boyan_veshchiy",  avatar: "img/boyan.jpg",      color: "#c9a227" },
-  igor:       { name: "Игорь Святославич",   nick: "@knyaz_igor",      avatar: "img/igor.jpg",       color: "#c0392b" },
-  vsevolod:   { name: "Всеволод Святославич",nick: "@bui_tur",         avatar: "img/vsevolod.jpg",   color: "#d35400" },
-  svyatoslav: { name: "Святослав Всеволодович", nick: "@velikiy_kyiv", avatar: "img/svyatoslav.jpg", color: "#8e44ad" },
+  boyan:      { name: "Боян",         nick: "@boyan_veshchiy",  avatar: "img/boyan.jpg",      color: "#c9a227" },
+  igor:       { name: "Игорь",   nick: "@knyaz_igor",      avatar: "img/igor.jpg",       color: "#c0392b" },
+  vsevolod:   { name: "Всеволод",nick: "@bui_tur",         avatar: "img/vsevolod.jpg",   color: "#d35400" },
+  svyatoslav: { name: "Святослав", nick: "@velikiy_kyiv", avatar: "img/svyatoslav.jpg", color: "#8e44ad" },
   yaroslavna: { name: "Ярославна",           nick: "@plach_yaroslavny",avatar: "img/yaroslavna.jpg", color: "#2980b9" },
   konchak:    { name: "Кончак",              nick: "@khan_konchak",    avatar: "img/konchak.jpg",    color: "#16a085" }
 };
@@ -162,9 +162,12 @@ function drawUsers() {
   var rows = document.querySelectorAll("#usersList .user-row");
   for (var i = 0; i < rows.length; i++) {
     rows[i].onclick = function() {
-      filterUser = this.getAttribute("data-u") || null;
-      drawUsers();
-      drawFeed();
+        filterUser = this.getAttribute("data-u") || null;
+        drawUsers();
+        drawFeed();
+        if (window.innerWidth <= 760) {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
     };
   }
 }

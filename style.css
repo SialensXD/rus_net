@@ -1,4 +1,10 @@
+/* ====== база ====== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
 
 body {
   background: #0f1419;
@@ -8,15 +14,17 @@ body {
   line-height: 1.45;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
 }
 
 button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
-input { font-family: inherit; }
+input   { font-family: inherit; }
+img     { max-width: 100%; display: block; }
 
-/* ---------- шапка ---------- */
+/* ====== шапка ====== */
 .topbar {
   position: sticky; top: 0; z-index: 50;
-  background: rgba(15,20,25,.88);
+  background: rgba(15,20,25,.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid #2f3336;
@@ -28,11 +36,12 @@ input { font-family: inherit; }
   font-family: Georgia, serif;
   font-size: 22px; font-weight: 700;
   color: #c0392b; white-space: nowrap;
+  flex-shrink: 0;
 }
 .logo span { color: #e7e9ea; }
 
 .search {
-  flex: 1; max-width: 400px;
+  flex: 1; min-width: 0; max-width: 400px;
   background: #202327;
   border: 1px solid transparent;
   border-radius: 999px;
@@ -45,7 +54,7 @@ input { font-family: inherit; }
 .search::placeholder { color: #71767b; }
 .search:focus { border-color: #1d9bf0; background: #0f1419; }
 
-/* ---------- сетка ---------- */
+/* ====== сетка (десктоп) ====== */
 .wrap {
   display: grid;
   grid-template-columns: 250px minmax(0, 600px) 290px;
@@ -69,12 +78,13 @@ input { font-family: inherit; }
   padding: 6px 12px 10px; font-weight: 600;
 }
 
-/* ---------- аккаунты ---------- */
+/* ====== аккаунты ====== */
 .user-row {
   display: flex; align-items: center; gap: 10px;
   padding: 8px 10px; border-radius: 10px;
-  cursor: pointer; transition: .15s;
+  cursor: pointer; transition: background .15s;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 .user-row:hover, .user-row.on { background: #1e2126; }
 .user-row.on .u-name { color: #c0392b; }
@@ -84,6 +94,7 @@ input { font-family: inherit; }
   flex-shrink: 0; position: relative; overflow: hidden;
   display: flex; align-items: center; justify-content: center;
   font-weight: 700; color: #fff; font-size: 16px;
+  background: #333;
 }
 .avatar img {
   position: absolute; inset: 0;
@@ -97,9 +108,9 @@ input { font-family: inherit; }
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .u-nick { color: #71767b; font-size: 12.5px; }
-.u-badge { color: #1d9bf0; font-size: 12px; }
+.u-badge { color: #1d9bf0; font-size: 12px; margin-left: 2px; }
 
-/* ---------- о проекте ---------- */
+/* ====== о проекте ====== */
 .about p { font-size: 13px; color: #b0b3b8; padding: 0 6px 8px; line-height: 1.5; }
 .about b { color: #e7e9ea; }
 .tags { padding: 0 6px 6px; }
@@ -109,7 +120,7 @@ input { font-family: inherit; }
   font-size: 11.5px; margin: 3px 3px 0 0;
 }
 
-/* ---------- лента ---------- */
+/* ====== лента ====== */
 .feed-head {
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 4px 12px;
@@ -141,7 +152,8 @@ input { font-family: inherit; }
 
 .post-text {
   margin-top: 3px; font-size: 15px;
-  word-wrap: break-word; white-space: pre-wrap;
+  word-wrap: break-word; overflow-wrap: anywhere;
+  white-space: pre-wrap;
 }
 .post-text .h { color: #1d9bf0; }
 
@@ -149,8 +161,9 @@ input { font-family: inherit; }
 .act {
   color: #71767b; font-size: 13.5px;
   display: flex; align-items: center; gap: 6px;
-  padding: 3px 6px; border-radius: 999px;
+  padding: 4px 6px; border-radius: 999px;
   transition: .15s;
+  -webkit-tap-highlight-color: transparent;
 }
 .act span { min-width: 12px; }
 .act-reply:hover  { color: #1d9bf0; background: rgba(29,155,240,.1); }
@@ -159,7 +172,7 @@ input { font-family: inherit; }
 .act-repost.on { color: #00ba7c; }
 .act-like.on   { color: #f91880; }
 
-/* ---------- тренды ---------- */
+/* ====== тренды ====== */
 .trend { padding: 9px 12px; border-radius: 10px; transition: .15s; }
 .trend:hover { background: #1e2126; }
 .trend .cat { font-size: 12px; color: #71767b; }
@@ -171,63 +184,142 @@ input { font-family: inherit; }
   padding: 50px 20px; font-size: 14px;
 }
 
-/* ---------- планшет ---------- */
+/* =========================================================
+   ПЛАНШЕТ (2 колонки, без трендов)
+   ========================================================= */
 @media (max-width: 1080px) {
   .wrap { grid-template-columns: 230px minmax(0, 1fr); }
   .side-right { display: none; }
 }
 
-/* ---------- телефон ---------- */
+/* =========================================================
+   ТЕЛЕФОН — полная переделка
+   ========================================================= */
 @media (max-width: 760px) {
-  .topbar { padding: 8px 12px; gap: 10px; }
-  .logo { font-size: 19px; }
-  .search { padding: 7px 14px; font-size: 13.5px; }
 
+  /* --- шапка --- */
+  .topbar {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  .logo { font-size: 18px; }
+  .search {
+    padding: 7px 12px;
+    font-size: 13px;
+    max-width: none;
+  }
+
+  /* --- контейнер: не grid, а обычный блок, чтоб ничего не наёбывалось --- */
   .wrap {
-    grid-template-columns: 1fr;
-    gap: 0;
+    display: block;
+    max-width: 100%;
+    margin: 0;
     padding: 0 0 40px;
   }
 
-  /* аккаунты — горизонтальной лентой сверху */
-  .side-left { order: -1; }
+  /* тренды и "о проекте" убираем совсем */
+  .side-right,
   .side-left .about { display: none; }
 
-  .side-left .accounts {
-    margin: 0;
+  /* --- аккаунты: горизонтальная карусель под шапкой --- */
+  .side-left .side-block.accounts {
+    position: sticky;
+    top: 47px;              /* примерно высота топбара */
+    z-index: 40;
+    background: #0f1419;
     border: none;
     border-bottom: 1px solid #2f3336;
     border-radius: 0;
-    padding: 10px 8px;
+    margin: 0;
+    padding: 10px 6px;
     display: flex;
+    gap: 2px;
     overflow-x: auto;
-    gap: 4px;
+    overflow-y: hidden;
     scrollbar-width: none;
+    -ms-overflow-style: none;
     -webkit-overflow-scrolling: touch;
   }
-  .side-left .accounts::-webkit-scrollbar { display: none; }
-  .side-left .accounts .side-title { display: none; }
+  .side-left .side-block.accounts::-webkit-scrollbar { display: none; }
 
-  .side-left .accounts .user-row {
+  .side-left .side-block.accounts .side-title { display: none; }
+
+  .side-left .side-block.accounts .user-row {
     flex-direction: column;
     min-width: 68px;
-    padding: 6px 4px;
+    max-width: 68px;
+    padding: 4px 2px;
     gap: 5px;
     text-align: center;
     flex-shrink: 0;
+    border-radius: 12px;
   }
-  .side-left .accounts .avatar { width: 44px; height: 44px; font-size: 17px; }
-  .side-left .accounts .u-nick { display: none; }
-  .side-left .accounts .u-name { font-size: 11.5px; }
-  .side-left .accounts .u-info { width: 100%; }
+  .side-left .side-block.accounts .avatar {
+    width: 46px; height: 46px;
+    font-size: 18px;
+  }
+  .side-left .side-block.accounts .u-info {
+    width: 100%;
+  }
+  .side-left .side-block.accounts .u-nick { display: none; }
+  .side-left .side-block.accounts .u-name {
+    font-size: 11px;
+    line-height: 1.15;
+    white-space: normal;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+  }
 
-  .side-right { display: none; }
-
-  .feed-head { padding: 12px 14px 10px; margin: 0; }
+  /* --- лента --- */
+  .feed { background: transparent; }
+  .feed-head {
+    padding: 12px 16px 10px;
+    margin: 0;
+  }
   .feed-head h2 { font-size: 16px; }
 
-  .post { padding: 12px 14px; gap: 10px; }
+  .post {
+    padding: 14px 16px;
+    gap: 10px;
+  }
   .post-text { font-size: 14.5px; }
-  .post-actions { gap: 28px; margin-left: -8px; }
-  .act { padding: 6px 8px; font-size: 13px; }
+
+  /* --- кнопки: крупнее для тапа --- */
+  .post-actions {
+    gap: 24px;
+    margin-top: 8px;
+    margin-left: -8px;
+  }
+  .act {
+    padding: 8px 10px;
+    font-size: 13px;
+    min-height: 40px;
+  }
+  .act span:first-child { font-size: 15px; }
+}
+
+/* =========================================================
+   ОЧЕНЬ УЗКИЕ ЭКРАНЫ (320–380px)
+   ========================================================= */
+@media (max-width: 380px) {
+  .logo { font-size: 16px; }
+  .search { font-size: 12.5px; padding: 6px 10px; }
+
+  .side-left .side-block.accounts .user-row {
+    min-width: 60px;
+    max-width: 60px;
+  }
+  .side-left .side-block.accounts .avatar {
+    width: 40px; height: 40px;
+    font-size: 16px;
+  }
+  .side-left .side-block.accounts .u-name { font-size: 10px; }
+
+  .post { padding: 12px 12px; gap: 9px; }
+  .avatar { width: 36px; height: 36px; font-size: 14px; }
+  .post-text { font-size: 14px; }
+  .post-actions { gap: 16px; }
 }
