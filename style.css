@@ -193,38 +193,39 @@ img     { max-width: 100%; display: block; }
 }
 
 /* =========================================================
-   ТЕЛЕФОН — полная переделка
+   ТЕЛЕФОН
    ========================================================= */
 @media (max-width: 760px) {
 
   /* --- шапка --- */
-  .topbar {
-    padding: 8px 12px;
-    gap: 8px;
-  }
+  .topbar { padding: 8px 12px; gap: 8px; }
   .logo { font-size: 18px; }
-  .search {
-    padding: 7px 12px;
-    font-size: 13px;
-    max-width: none;
-  }
+  .search { padding: 7px 12px; font-size: 13px; max-width: none; }
 
-  /* --- контейнер: не grid, а обычный блок, чтоб ничего не наёбывалось --- */
+  /* --- контейнер --- */
   .wrap {
-    display: block;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
     max-width: 100%;
     margin: 0;
     padding: 0 0 40px;
   }
 
-  /* тренды и "о проекте" убираем совсем */
-  .side-right,
-  .side-left .about { display: none; }
+  /* "растворяем" боковую колонку, чтоб её дети
+     встали в общий поток и их можно было расставить по порядку */
+  .side-left { display: contents; }
 
-  /* --- аккаунты: горизонтальная карусель под шапкой --- */
+  /* --- порядок блоков на мобилке --- */
+  .side-left .side-block.accounts { order: 1; }  /* аккаунты — карусель сверху */
+  .feed                           { order: 2; }  /* лента */
+  .side-left .about               { order: 3; }  /* о проекте — снизу */
+  .side-right                     { order: 4; display: block; } /* тренды — в самом низу */
+
+  /* --- аккаунты: горизонтальная карусель --- */
   .side-left .side-block.accounts {
     position: sticky;
-    top: 47px;              /* примерно высота топбара */
+    top: 47px;
     z-index: 40;
     background: #0f1419;
     border: none;
@@ -241,7 +242,6 @@ img     { max-width: 100%; display: block; }
     -webkit-overflow-scrolling: touch;
   }
   .side-left .side-block.accounts::-webkit-scrollbar { display: none; }
-
   .side-left .side-block.accounts .side-title { display: none; }
 
   .side-left .side-block.accounts .user-row {
@@ -255,12 +255,9 @@ img     { max-width: 100%; display: block; }
     border-radius: 12px;
   }
   .side-left .side-block.accounts .avatar {
-    width: 46px; height: 46px;
-    font-size: 18px;
+    width: 46px; height: 46px; font-size: 18px;
   }
-  .side-left .side-block.accounts .u-info {
-    width: 100%;
-  }
+  .side-left .side-block.accounts .u-info { width: 100%; }
   .side-left .side-block.accounts .u-nick { display: none; }
   .side-left .side-block.accounts .u-name {
     font-size: 11px;
@@ -274,31 +271,44 @@ img     { max-width: 100%; display: block; }
   }
 
   /* --- лента --- */
-  .feed { background: transparent; }
-  .feed-head {
-    padding: 12px 16px 10px;
-    margin: 0;
-  }
+  .feed-head { padding: 12px 16px 10px; margin: 0; }
   .feed-head h2 { font-size: 16px; }
 
-  .post {
-    padding: 14px 16px;
-    gap: 10px;
-  }
+  .post { padding: 14px 16px; gap: 10px; }
   .post-text { font-size: 14.5px; }
 
-  /* --- кнопки: крупнее для тапа --- */
-  .post-actions {
-    gap: 24px;
-    margin-top: 8px;
-    margin-left: -8px;
-  }
-  .act {
-    padding: 8px 10px;
-    font-size: 13px;
-    min-height: 40px;
-  }
+  .post-actions { gap: 24px; margin-top: 8px; margin-left: -8px; }
+  .act { padding: 8px 10px; font-size: 13px; min-height: 40px; }
   .act span:first-child { font-size: 15px; }
+
+  /* --- "о проекте" и "в тренде": карточки снизу --- */
+  .side-left .about,
+  .side-right .side-block {
+    margin: 14px 12px 0;
+    border-radius: 14px;
+    background: #16181c;
+    border: 1px solid #2f3336;
+    padding: 8px 8px 12px;
+  }
+
+  .side-left .about .side-title,
+  .side-right .side-title {
+    padding: 6px 10px 8px;
+    font-size: 12px;
+  }
+
+  .side-left .about p {
+    padding: 0 10px 8px;
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+  .side-left .about .tags { padding: 0 10px 4px; }
+  .side-left .about .tags span { font-size: 12px; padding: 2px 10px; }
+
+  .side-right .trend { padding: 10px 10px; }
+  .side-right .trend .tag { font-size: 14.5px; }
+  .side-right .trend .cat,
+  .side-right .trend .cnt { font-size: 12.5px; }
 }
 
 /* =========================================================
@@ -308,18 +318,15 @@ img     { max-width: 100%; display: block; }
   .logo { font-size: 16px; }
   .search { font-size: 12.5px; padding: 6px 10px; }
 
-  .side-left .side-block.accounts .user-row {
-    min-width: 60px;
-    max-width: 60px;
-  }
-  .side-left .side-block.accounts .avatar {
-    width: 40px; height: 40px;
-    font-size: 16px;
-  }
+  .side-left .side-block.accounts .user-row { min-width: 60px; max-width: 60px; }
+  .side-left .side-block.accounts .avatar { width: 40px; height: 40px; font-size: 16px; }
   .side-left .side-block.accounts .u-name { font-size: 10px; }
 
   .post { padding: 12px 12px; gap: 9px; }
   .avatar { width: 36px; height: 36px; font-size: 14px; }
   .post-text { font-size: 14px; }
   .post-actions { gap: 16px; }
+
+  .side-left .about,
+  .side-right .side-block { margin: 12px 8px 0; }
 }
