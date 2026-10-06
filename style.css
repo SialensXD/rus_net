@@ -172,7 +172,7 @@ img     { max-width: 100%; display: block; }
   padding: 50px 20px; font-size: 14px;
 }
 
-/* нижнее меню — по умолчанию спрятано (для десктопа) */
+/* нижнее меню — по умолчанию спрятано */
 .bottom-nav { display: none; }
 
 /* =========================================================
@@ -184,24 +184,18 @@ img     { max-width: 100%; display: block; }
 }
 
 /* =========================================================
-   МОБИЛЬНЫЙ — СОВСЕМ ДРУГОЙ ИНТЕРФЕЙС
+   МОБИЛЬНЫЙ
    ========================================================= */
 @media (max-width: 760px) {
 
-  /* --- шапка не липнет, уезжает при скролле --- */
   .topbar {
     position: static;
     padding: 12px 16px;
     gap: 10px;
   }
   .logo { font-size: 20px; }
-  .search {
-    padding: 8px 14px;
-    font-size: 14px;
-    max-width: none;
-  }
+  .search { padding: 8px 14px; font-size: 14px; max-width: none; }
 
-  /* --- контейнер: место под нижнее меню --- */
   .wrap {
     display: block;
     max-width: 100%;
@@ -209,10 +203,10 @@ img     { max-width: 100%; display: block; }
     padding: 0 0 80px;
   }
 
-  /* --- "растворяем" обёртки сайдбаров, чтоб дети стали отдельными блоками --- */
   .side-left { display: contents; }
 
-  /* ====== вкладка "ЛЕНТА" (по умолчанию) ====== */
+  /* ====== КАРУСЕЛЬ АККАУНТОВ ====== */
+  /* внешний блок — просто обёртка со стики и фоном */
   .side-left .side-block.accounts {
     position: sticky;
     top: 0;
@@ -222,28 +216,37 @@ img     { max-width: 100%; display: block; }
     border-bottom: 1px solid #2f3336;
     border-radius: 0;
     margin: 0;
-    padding: 10px 8px;
+    padding: 10px 0;
+    overflow: hidden; /* без этого sticky иногда сбоит в Safari */
+  }
+
+  /* вот здесь всё и едет: именно #usersList — flex-контейнер карусели */
+  .side-left .side-block.accounts #usersList {
     display: flex;
+    flex-direction: row;
     gap: 3px;
     overflow-x: auto;
     overflow-y: hidden;
+    padding: 0 8px;
     scrollbar-width: none;
     -ms-overflow-style: none;
     -webkit-overflow-scrolling: touch;
   }
-  .side-left .side-block.accounts::-webkit-scrollbar { display: none; }
+  .side-left .side-block.accounts #usersList::-webkit-scrollbar { display: none; }
+
   .side-left .side-block.accounts .side-title { display: none; }
+
   .side-left .side-block.accounts .user-row {
+    flex: 0 0 auto;      /* важно: не растягиваться, не сжиматься */
     flex-direction: column;
-    min-width: 70px; max-width: 70px;
+    width: 70px;
     padding: 5px 3px;
     gap: 5px;
     text-align: center;
-    flex-shrink: 0;
     border-radius: 12px;
   }
   .side-left .side-block.accounts .avatar { width: 48px; height: 48px; font-size: 19px; }
-  .side-left .side-block.accounts .u-info { width: 100%; }
+  .side-left .side-block.accounts .u-info { width: 100%; flex: none; }
   .side-left .side-block.accounts .u-nick { display: none; }
   .side-left .side-block.accounts .u-name {
     font-size: 11px; line-height: 1.15;
@@ -254,24 +257,21 @@ img     { max-width: 100%; display: block; }
     word-break: break-word;
   }
 
+  /* ====== ЛЕНТА ====== */
   .feed { display: block; }
   .feed-head { padding: 14px 16px 12px; margin: 0; }
   .feed-head h2 { font-size: 17px; }
   .post { padding: 15px 16px; gap: 11px; }
   .post-text { font-size: 14.5px; line-height: 1.5; }
   .post-actions { gap: 26px; margin-top: 10px; margin-left: -8px; }
-  .act {
-    padding: 8px 10px;
-    font-size: 13px;
-    min-height: 42px;
-  }
+  .act { padding: 8px 10px; font-size: 13px; min-height: 42px; }
   .act span:first-child { font-size: 15px; }
 
-  /* на мобилке скрываем "о проекте" и "тренды" пока не переключим вкладку */
+  /* на мобилке по умолчанию скрыты "О проекте" и "Тренды" */
   .side-left .about,
   .side-right { display: none; }
 
-  /* ====== вкладка "ТРЕНДЫ" ====== */
+  /* ====== ВКЛАДКА ТРЕНДЫ ====== */
   body[data-tab="trends"] .side-left .side-block.accounts { display: none; }
   body[data-tab="trends"] .feed { display: none; }
   body[data-tab="trends"] .side-right {
@@ -296,7 +296,7 @@ img     { max-width: 100%; display: block; }
   body[data-tab="trends"] .side-right .trend .cat,
   body[data-tab="trends"] .side-right .trend .cnt { font-size: 12.5px; }
 
-  /* ====== вкладка "О ПРОЕКТЕ" ====== */
+  /* ====== ВКЛАДКА О ПРОЕКТЕ ====== */
   body[data-tab="about"] .side-left .side-block.accounts { display: none; }
   body[data-tab="about"] .feed { display: none; }
   body[data-tab="about"] .side-left .about {
@@ -316,9 +316,7 @@ img     { max-width: 100%; display: block; }
     font-size: 14.5px;
     line-height: 1.6;
   }
-  body[data-tab="about"] .side-left .about .tags {
-    padding: 0 12px 4px;
-  }
+  body[data-tab="about"] .side-left .about .tags { padding: 0 12px 4px; }
   body[data-tab="about"] .side-left .about .tags span {
     font-size: 12.5px;
     padding: 3px 10px;
@@ -351,10 +349,7 @@ img     { max-width: 100%; display: block; }
     transition: .15s;
     -webkit-tap-highlight-color: transparent;
   }
-  .bn-btn svg {
-    width: 24px; height: 24px;
-    stroke: currentColor;
-  }
+  .bn-btn svg { width: 24px; height: 24px; stroke: currentColor; }
   .bn-btn.on { color: #c0392b; }
   .bn-btn.on svg { stroke: #c0392b; }
   .bn-btn:active { background: #1e2126; }
@@ -367,7 +362,7 @@ img     { max-width: 100%; display: block; }
   .logo { font-size: 17px; }
   .search { font-size: 13px; padding: 7px 12px; }
 
-  .side-left .side-block.accounts .user-row { min-width: 62px; max-width: 62px; }
+  .side-left .side-block.accounts .user-row { width: 62px; }
   .side-left .side-block.accounts .avatar { width: 42px; height: 42px; font-size: 17px; }
   .side-left .side-block.accounts .u-name { font-size: 10px; }
 
