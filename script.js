@@ -2,70 +2,68 @@
 // Русь.нет — данные и логика
 // ============================================================
 
-// "я" — читатель, от его лица идут цитаты
 var ME = { name: "Ты", nick: "@reader", avatar: "", color: "#c0392b" };
 
-// ---------- аккаунты ----------
 var users = {
   boyan: {
     name: "Боян Вещий",
     nick: "@boyan_veshchiy",
     avatar: "img/boyan.jpg",
     color: "#c9a227",
-    bio: "Песнотворец. Живу прошлым. Растекаюсь мыслию по древу.",
+    bio: "Я фембой",
     location: "где-то во времени",
-    joined: "с незапамятных времён",
+    joined: "с незапамятных времён"
   },
   igor: {
     name: "Игорь Святославич",
     nick: "@knyaz_igor",
     avatar: "img/igor.jpg",
     color: "#c0392b",
-    bio: "Князь новгород-северский. Иду на половцев. Потом расскажу, как всё прошло.",
+    bio: "Я латентный гей",
     location: "Путивль → Дон",
-    joined: "март 1185",
+    joined: "март 1185"
   },
   vsevolod: {
     name: "Всеволод Святославич",
     nick: "@bui_tur",
     avatar: "img/vsevolod.jpg",
     color: "#d35400",
-    bio: "Буй тур. Брат Игоря. Куряне со мной.",
+    bio: "смехуятина",
     location: "в седле",
-    joined: "март 1185",
+    joined: "март 1185"
   },
   svyatoslav: {
     name: "Святослав Всеволодович",
     nick: "@velikiy_kyiv",
     avatar: "img/svyatoslav.jpg",
     color: "#8e44ad",
-    bio: "Великий князь киевский. Сны вижу нехорошие. Слово у меня золотое.",
+    bio: "да",
     location: "Киев",
-    joined: "с давних пор",
+    joined: "с давних пор"
   },
   yaroslavna: {
     name: "Ярославна",
     nick: "@plach_yaroslavny",
     avatar: "img/yaroslavna.jpg",
     color: "#2980b9",
-    bio: "Жена Игоря. Жду на путивльской стене. Говорю с ветром, Днепром и солнцем.",
+    bio: "ыыы",
     location: "Путивль",
-    joined: "март 1185",
+    joined: "март 1185"
   },
   konchak: {
     name: "Кончак",
     nick: "@khan_konchak",
     avatar: "img/konchak.jpg",
     color: "#16a085",
-    bio: "Хан половецкий. Игорь у меня в гостях. Хороший человек, честно.",
+    bio: "крутой",
     location: "степь",
-    joined: "издавна",
+    joined: "издавна"
   }
 };
 
 var verified = ["igor", "vsevolod", "svyatoslav", "konchak"];
 
-// ВРЕМЕННЫЕ ЗАГОТОВКИ
+// ВРЕМЕННЫЕ ЗАГОТОВКИ. Тексты заменит капитан.
 var posts = [
   {
     id: 1, u: "boyan", time: "1 мая", likes: 87, reposts: 12, replies: 5,
@@ -100,20 +98,20 @@ var posts = [
 ];
 
 var trends = [
-  { cat: "Актуально",    tag: "#подлежит редакту",       cnt: "12,4 тыс. постов" },
-  { cat: "Русь", tag: "#подлежит редакту",               cnt: "8,1 тыс. постов" },
-  { cat: "Русь", tag: "#подлежит редакту",               cnt: "3,7 тыс. постов" },
-  { cat: "Обсуждают",    tag: "#подлежит редакту",       cnt: "5,2 тыс. постов" },
-  { cat: "Обсуждают",    tag: "#подлежит редакту",       cnt: "4,9 тыс. постов" },
-  { cat: "Половцы",      tag: "#подлежит редакту",       cnt: "2,1 тыс. постов" },
-  { cat: "Половцы",      tag: "#подлежит редакту,        cnt: "981 пост" }
+  { cat: "Актуально", tag: "#подлежитРедакту1", cnt: "12,4 тыс. постов" },
+  { cat: "Русь",      tag: "#подлежитРедакту2", cnt: "8,1 тыс. постов" },
+  { cat: "Русь",      tag: "#подлежитРедакту3", cnt: "3,7 тыс. постов" },
+  { cat: "Обсуждают", tag: "#подлежитРедакту4", cnt: "5,2 тыс. постов" },
+  { cat: "Обсуждают", tag: "#подлежитРедакту5", cnt: "4,9 тыс. постов" },
+  { cat: "Половцы",   tag: "#подлежитРедакту6", cnt: "2,1 тыс. постов" },
+  { cat: "Половцы",   tag: "#подлежитРедакту7", cnt: "981 пост" }
 ];
 
 var notifs = [
   { id: 1, type: "mention", icon: "Б", text: "<b>боян</b> крутой", time: "1 мая", postId: 1 },
   { id: 2, type: "reply",   icon: "💬", text: "<b>будет</b> отредачено", time: "1 мая", postId: 2 },
-  { id: 3, type: "repost",  icon: "↻", text: "<b>хз</b> ", time: "1 мая", postId: 3 },
-  { id: 4, type: "like",    icon: "♥", text: "<b>все будет переделанно</b> ", time: "11 мая", postId: 5 },
+  { id: 3, type: "repost",  icon: "↻", text: "<b>хз</b>", time: "1 мая", postId: 3 },
+  { id: 4, type: "like",    icon: "♥", text: "<b>все будет переделанно</b>", time: "11 мая", postId: 5 },
   { id: 5, type: "mention", icon: "С", text: "<b>Святослав</b> чето сделал хз", time: "9 мая", postId: 4 }
 ];
 
@@ -121,7 +119,7 @@ var notifs = [
 // состояние
 // ============================================================
 var likes = {}, reposts = {};
-var myPosts = [];               // мои цитаты
+var myPosts = [];
 var filterUser = null;
 var filterTag = null;
 var searchQuery = "";
@@ -159,12 +157,14 @@ function short(n) {
   return String(n);
 }
 function viewsFor(p) {
-  return Math.round((p.likes * 60 + p.reposts * 240 + p.replies * 15) + 850);
+  return Math.round((p.likes * 60 + p.reposts * 240 + (p.replies || 0) * 15) + 850);
 }
 
 var BADGE = '<svg class="p-badge" viewBox="0 0 24 24" fill="currentColor"><path d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.66-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.68-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34zm-11.71 4.2L6.8 12.46l1.41-1.42 2.26 2.26 4.8-5.23 1.47 1.36-6.2 6.77z"/></svg>';
 
 var BADGE_SM = '<svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;color:var(--link);flex-shrink:0"><path d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.66-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.68-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34zm-11.71 4.2L6.8 12.46l1.41-1.42 2.26 2.26 4.8-5.23 1.47 1.36-6.2 6.77z"/></svg>';
+
+var PIN_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2l8 8-2 2-1.5-1.5-4 4L14 22l-2-2-3-3-5 5-1-1 5-5-3-3-2-2 7.5-.5 4-4L13 4z"/></svg>';
 
 function getU(key) {
   if (key === "me") return ME;
@@ -178,7 +178,6 @@ function avatarHTML(u, cls) {
          '</div>';
 }
 
-// все посты: мои + авторские, с сортировкой по id (мои всегда сверху)
 function allPosts() {
   return myPosts.concat(posts).sort(function(a, b) {
     if (a.u === "me" && b.u !== "me") return -1;
@@ -206,7 +205,7 @@ function postHTML(p) {
   h += avatarHTML(u, "p-av");
   h += '<div class="p-main">';
 
-  // метки — ВНУТРИ колонки с текстом, рядом с аватаркой, не пересекаются с ней
+  // метки — внутри колонки с текстом, не пересекаются с аватаркой
   if (isPinned) {
     h += '<div class="p-pinned">' + PIN_SVG + 'Закреплено</div>';
   }
@@ -271,8 +270,9 @@ function drawFeed() {
   var shown = 0;
 
   if (currentTab === "following" && !filterUser) {
-    out = '<div class="empty"><span class="em">📜</span><b>Ты никого не читаешь</b>Зайди в "Люди" и выбери аккаунт.</div>';
+    out = '<div class="empty"><span class="em">📜</span><b>Ты никого не читаешь</b>Зайди в «Люди» и выбери аккаунт.</div>';
     document.getElementById("feed").innerHTML = out;
+    updateFilterBanner();
     return;
   }
 
@@ -311,7 +311,6 @@ function bindFeed(root) {
       var id = parseInt(this.closest(".post").getAttribute("data-id"), 10);
       if (likes[id]) delete likes[id]; else likes[id] = true;
       save();
-      // анимация на цифре
       var cnt = this.querySelector(".cnt");
       if (cnt) {
         cnt.classList.remove("pop");
@@ -367,29 +366,20 @@ function bindFeed(root) {
   for (var t = 0; t < tags.length; t++) {
     tags[t].onclick = function(e) {
       e.stopPropagation();
-      var tag = this.getAttribute("data-tag");
-      filterTag = tag;
+      filterTag = this.getAttribute("data-tag");
+      filterUser = null;
+      drawUsers();
       drawFeed();
       window.scrollTo({ top: 0, behavior: "smooth" });
     };
   }
 
-  // раскрытие ответов
-  var toggles = root.querySelectorAll(".replies-toggle");
-  for (var tt = 0; tt < toggles.length; tt++) {
-    toggles[tt].onclick = function(e) {
+  // кнопка «ответить» — просто тост
+  var replyBtns = root.querySelectorAll(".pact-reply");
+  for (var rb = 0; rb < replyBtns.length; rb++) {
+    replyBtns[rb].onclick = function(e) {
       e.stopPropagation();
-      var pid = this.getAttribute("data-toggle");
-      var el = document.getElementById("replies-" + pid);
-      if (!el) return;
-      el.classList.toggle("on");
-      var opened = el.classList.contains("on");
-      var cnt = 0;
-      var p = findPost(parseInt(pid, 10));
-      if (p && p.replies) cnt = p.replies.length;
-      this.innerHTML = opened
-        ? "💬 Скрыть ответы"
-        : "💬 Показать ответы (" + cnt + ")";
+      toast("Ответы — во второй версии");
     };
   }
 }
@@ -508,7 +498,6 @@ function renderProfile() {
   var u = getU(profileUser);
   if (!u) return;
 
-  // считаем посты и лайки
   var userPosts = [];
   var totalLikes = 0, totalReposts = 0;
   for (var i = 0; i < posts.length; i++) {
@@ -545,13 +534,12 @@ function renderProfile() {
            (u.joined ? '<span>🗓 ' + u.joined + '</span>' : '') +
          '</div>' +
          '<div class="profile-stats">' +
-           '<span><b>' + userPosts.length + '</b> пост</span>' +
+           '<span><b>' + userPosts.length + '</b> постов</span>' +
            '<span><b>' + short(totalLikes) + '</b> лайков</span>' +
            '<span><b>' + short(totalReposts) + '</b> репостов</span>' +
          '</div>' +
        '</div>';
 
-  // посты профиля
   if (!userPosts.length) {
     h += '<div class="empty"><span class="em">📜</span><b>Пока ничего</b>Этот персонаж ещё не опубликовал ни одного поста.</div>';
   } else {
@@ -702,7 +690,6 @@ function switchView(name) {
   }
 }
 
-// табы
 var topTabs = document.querySelectorAll("#topTabs .tab");
 for (var ti = 0; ti < topTabs.length; ti++) {
   topTabs[ti].onclick = function() {
@@ -711,7 +698,6 @@ for (var ti = 0; ti < topTabs.length; ti++) {
   };
 }
 
-// нижнее меню
 var bnBtns = document.querySelectorAll("#bottomNav .bn-btn");
 for (var bi = 0; bi < bnBtns.length; bi++) {
   bnBtns[bi].onclick = function() {
@@ -734,7 +720,6 @@ themeBtn.onclick = function() {
   if (meta) meta.setAttribute("content", next === "light" ? "#ffffff" : "#000000");
 };
 
-// подгружаем тему
 try {
   var savedTheme = localStorage.getItem("rn_theme");
   if (savedTheme) {
@@ -754,7 +739,6 @@ function closeOverlay(id) {
   document.getElementById(id).classList.remove("on");
 }
 
-// клик по фону закрывает
 var overlays = document.querySelectorAll(".overlay");
 for (var oi = 0; oi < overlays.length; oi++) {
   overlays[oi].addEventListener("click", function(e) {
@@ -762,7 +746,6 @@ for (var oi = 0; oi < overlays.length; oi++) {
   });
 }
 
-// меню "···"
 var menuItems = document.querySelectorAll("#menuSheet .menu-item");
 for (var mi = 0; mi < menuItems.length; mi++) {
   menuItems[mi].onclick = function() {
@@ -776,7 +759,7 @@ for (var mi = 0; mi < menuItems.length; mi++) {
     } else if (action === "copy") {
       var p = findPost(pid);
       if (p) {
-        navigator.clipboard && navigator.clipboard.writeText(p.t);
+        if (navigator.clipboard) navigator.clipboard.writeText(p.t);
         toast("Текст скопирован");
       }
     } else if (action === "report") {
@@ -785,7 +768,6 @@ for (var mi = 0; mi < menuItems.length; mi++) {
   };
 }
 
-// цитата
 var quoteTargetId = null;
 function openQuote(pid) {
   quoteTargetId = pid;
@@ -844,7 +826,7 @@ document.getElementById("confirmYes").onclick = function() {
 };
 
 document.getElementById("resetBtn").onclick = function() {
-  showConfirm("Сбросить?", "все твои лайки и репосты обнулятся ", function() {
+  showConfirm("Сбросить?", "Все твои лайки и репосты обнулятся.", function() {
     likes = {};
     reposts = {};
     save();
@@ -881,14 +863,13 @@ if (searchEl) {
 // прочее
 // ============================================================
 document.getElementById("fabBtn").onclick = function() {
-  toast("нахуя тебе писать че-то");
+  toast("Посты в летописи пишут только князья");
 };
 
 document.getElementById("addBtn").onclick = function() {
-  toast("не доделал еще");
+  toast("Подписки: пока никого");
 };
 
-// клавиша Esc закрывает модалки
 document.addEventListener("keydown", function(e) {
   if (e.key === "Escape") {
     var op = document.querySelectorAll(".overlay.on");
