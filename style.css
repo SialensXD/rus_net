@@ -1248,12 +1248,12 @@ body[data-view="profile"] .fab { display: none; }
   letter-spacing: 2px;
   text-transform: uppercase;
   text-shadow: 0 0 8px rgba(249, 215, 28, .35);
-  animation: crawl 400s linear forwards;
+  animation: crawl 900s linear forwards;
 }
 
 @keyframes crawl {
   0%   { top: 100%; }
-  100% { top: -3200%; }
+  100% { top: -7100%; }
 }
 
 .crawl-title {
