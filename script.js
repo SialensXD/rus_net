@@ -369,6 +369,8 @@ function bindFeed(root) {
       filterTag = this.getAttribute("data-tag");
       filterUser = null;
       drawUsers();
+      switchView("feed");
+      switchTab("foryou");
       drawFeed();
       window.scrollTo({ top: 0, behavior: "smooth" });
     };
@@ -675,7 +677,14 @@ function switchView(name) {
   var views = document.querySelectorAll(".view");
   for (var i = 0; i < views.length; i++) views[i].classList.remove("on");
 
-  var map = { feed: "viewFeed", notifs: "viewNotifs", accounts: "viewAccounts", about: "viewAbout", profile: "viewProfile" };
+  var map = {
+    feed: "viewFeed",
+    notifs: "viewNotifs",
+    trends: "viewTrends",
+    accounts: "viewAccounts",
+    about: "viewAbout",
+    profile: "viewProfile"
+  };
   var el = document.getElementById(map[name]);
   if (el) el.classList.add("on");
 
