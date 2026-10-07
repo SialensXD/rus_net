@@ -1254,7 +1254,7 @@ body[data-view="profile"] .fab { display: none; }
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 
-  animation: crawl 380s linear forwards;
+  animation: crawl 310s linear forwards;
 }
 
 @keyframes crawl {
