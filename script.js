@@ -180,11 +180,47 @@ var notifs = [
   { id: 6, type: "reply",   icon: "💬", text: "<b>Ярославна</b> плачет на путивльской стене.", time: "11 мая", postId: 19 }
 ];
 
+// заготовленные диалоги под ключевыми постами
+var postReplies = {
+  1: [
+    { id: 101, u: "igor",       t: "Спасибо, старик. Надеюсь, не зря.", time: "1 мая" },
+    { id: 102, u: "svyatoslav", t: "Знал бы ты, чем кончится...", time: "1 мая" },
+    { id: 103, u: "yaroslavna", t: "Лишь бы вернулся.", time: "1 мая" }
+  ],
+  4: [
+    { id: 201, u: "vsevolod",   t: "Да ладно, брат. Прорвёмся.", time: "1 мая" },
+    { id: 202, u: "boyan",      t: "Ох, зря-зря-зря.", time: "1 мая" },
+    { id: 203, u: "yaroslavna", t: "Игорь, вернись. Ну пожалуйста.", time: "1 мая" }
+  ],
+  13: [
+    { id: 301, u: "yaroslavna", t: "Я чувствую. Слышишь меня?", time: "7 мая" },
+    { id: 302, u: "svyatoslav", t: "Вот к чему приводит самонадеянность.", time: "7 мая" },
+    { id: 303, u: "konchak",    t: "Он у нас. Не переживайте.", time: "7 мая" }
+  ],
+  17: [
+    { id: 401, u: "igor",       t: "Понял. Прав.", time: "10 мая" },
+    { id: 402, u: "vsevolod",   t: "Признаю.", time: "10 мая" },
+    { id: 403, u: "boyan",      t: "Вот это — правильные слова.", time: "10 мая" }
+  ],
+  19: [
+    { id: 501, u: "igor",       t: "Слышу. Слышу тебя.", time: "11 мая" },
+    { id: 502, u: "svyatoslav", t: "Голос её долетел до Киева.", time: "11 мая" }
+  ],
+  20: [
+    { id: 601, u: "boyan",      t: "Слышали? Это голос Ярославны. Сила.", time: "11 мая" }
+  ],
+  21: [
+    { id: 701, u: "igor",       t: "Днепр, ты слышишь её...", time: "12 мая" }
+  ]
+};
+
 // ============================================================
 // состояние
 // ============================================================
-var likes = {}, reposts = {};
+var likes = {}, reposts = {}, bookmarks = {};
 var myPosts = [];
+var myReplies = {};
+var openedReplies = {};
 var filterUser = null;
 var filterTag = null;
 var searchQuery = "";
@@ -196,6 +232,8 @@ try {
   likes = JSON.parse(localStorage.getItem("rn_likes") || "{}");
   reposts = JSON.parse(localStorage.getItem("rn_reposts") || "{}");
   myPosts = JSON.parse(localStorage.getItem("rn_myPosts") || "[]");
+  bookmarks = JSON.parse(localStorage.getItem("rn_bookmarks") || "{}");
+  myReplies = JSON.parse(localStorage.getItem("rn_myReplies") || "{}");
 } catch (e) {}
 
 function save() {
@@ -203,6 +241,8 @@ function save() {
     localStorage.setItem("rn_likes", JSON.stringify(likes));
     localStorage.setItem("rn_reposts", JSON.stringify(reposts));
     localStorage.setItem("rn_myPosts", JSON.stringify(myPosts));
+    localStorage.setItem("rn_bookmarks", JSON.stringify(bookmarks));
+    localStorage.setItem("rn_myReplies", JSON.stringify(myReplies));
   } catch (e) {}
 }
 
@@ -260,17 +300,18 @@ function postHTML(p) {
 
   var liked = likes[p.id] === true;
   var rep = reposts[p.id] === true;
+  var isBookmarked = bookmarks[p.id] === true;
   var lc = p.likes + (liked ? 1 : 0);
   var rc = p.reposts + (rep ? 1 : 0);
   var badge = verified.indexOf(p.u) !== -1 ? BADGE : "";
   var isPinned = p.pinnedFor && p.pinnedFor === p.u;
+  var replyCount = (postReplies[p.id] || []).length + (myReplies[p.id] || []).length;
 
   var h = '<article class="post" data-id="' + p.id + '" data-u="' + p.u + '">';
   h += '<div class="post-row">';
   h += avatarHTML(u, "p-av");
   h += '<div class="p-main">';
 
-  // метки — внутри колонки с текстом, не пересекаются с аватаркой
   if (isPinned) {
     h += '<div class="p-pinned">' + PIN_SVG + 'Закреплено</div>';
   }
@@ -311,17 +352,48 @@ function postHTML(p) {
     }
   }
 
-  h += '<div class="p-actions">' +
-         '<button class="pact pact-reply"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20.5c5.25 0 9.5-4.25 9.5-9.5S17.25 1.5 12 1.5 2.5 5.75 2.5 11c0 1.9.55 3.68 1.5 5.17L3 22l5.8-1.5c.99.32 2.07.5 3.2.5z"/></svg><span class="cnt">' + short(p.replies || 0) + '</span></button>' +
-         '<button class="pact pact-repost' + (rep ? " on" : "") + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7v8a3 3 0 0 0 3 3h9"/><polyline points="14 15 17 18 14 21"/><path d="M20 17V9a3 3 0 0 0-3-3H8"/><polyline points="10 3 7 6 10 9"/></svg><span class="cnt">' + short(rc) + '</span></button>' +
-         '<button class="pact pact-like' + (liked ? " on" : "") + '"><svg viewBox="0 0 24 24" fill="' + (liked ? "currentColor" : "none") + '" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-8-5.2-8-11a4.5 4.5 0 0 1 8-2.9A4.5 4.5 0 0 1 20 10c0 5.8-8 11-8 11z"/></svg><span class="cnt">' + short(lc) + '</span></button>' +
-         '<button class="pact pact-views"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="12" width="3.5" height="9" rx="1"/><rect x="10.2" y="6" width="3.5" height="15" rx="1"/><rect x="17.5" y="9" width="3.5" height="12" rx="1"/></svg><span class="cnt">' + short(viewsFor(p)) + '</span></button>' +
-         '<button class="pact pact-bookmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4.5L5 21V4a1 1 0 0 1 1-1z"/></svg></button>' +
-         '<button class="pact pact-share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><polyline points="6 9 12 3 18 9"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg></button>' +
-       '</div>';
+  // ============ КНОПКИ ============
+  h += '<div class="p-actions">';
 
-  h += '</div>';   // p-main
-  h += '</div>';   // post-row
+  // ответить
+  h += '<button class="pact pact-reply" data-reply="' + p.id + '">' +
+         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20.5c5.25 0 9.5-4.25 9.5-9.5S17.25 1.5 12 1.5 2.5 5.75 2.5 11c0 1.9.55 3.68 1.5 5.17L3 22l5.8-1.5c.99.32 2.07.5 3.2.5z"/></svg>' +
+         '<span class="cnt">' + short(replyCount || p.replies || 0) + '</span>' +
+       '</button>';
+
+  // репост
+  h += '<button class="pact pact-repost' + (rep ? " on" : "") + '">' +
+         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7v8a3 3 0 0 0 3 3h9"/><polyline points="14 15 17 18 14 21"/><path d="M20 17V9a3 3 0 0 0-3-3H8"/><polyline points="10 3 7 6 10 9"/></svg>' +
+         '<span class="cnt">' + short(rc) + '</span>' +
+       '</button>';
+
+  // лайк
+  h += '<button class="pact pact-like' + (liked ? " on" : "") + '">' +
+         '<svg viewBox="0 0 24 24" fill="' + (liked ? "currentColor" : "none") + '" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-8-5.2-8-11a4.5 4.5 0 0 1 8-2.9A4.5 4.5 0 0 1 20 10c0 5.8-8 11-8 11z"/></svg>' +
+         '<span class="cnt">' + short(lc) + '</span>' +
+       '</button>';
+
+  // просмотры
+  h += '<button class="pact pact-views">' +
+         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="12" width="3.5" height="9" rx="1"/><rect x="10.2" y="6" width="3.5" height="15" rx="1"/><rect x="17.5" y="9" width="3.5" height="12" rx="1"/></svg>' +
+         '<span class="cnt">' + short(viewsFor(p)) + '</span>' +
+       '</button>';
+
+  // ЗАКЛАДКА
+  h += '<button class="pact pact-bookmark' + (isBookmarked ? " on" : "") + '" aria-label="в закладки">' +
+         '<svg viewBox="0 0 24 24" fill="' + (isBookmarked ? "currentColor" : "none") + '" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4.5L5 21V4a1 1 0 0 1 1-1z"/></svg>' +
+       '</button>';
+
+  // поделиться
+  h += '<button class="pact pact-share" aria-label="поделиться">' +
+         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><polyline points="6 9 12 3 18 9"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>' +
+       '</button>';
+
+  h += '</div>';   // .p-actions
+
+  h += '</div>';   // .p-main
+  h += '</div>';   // .post-row
+  h += repliesHTML(p.id);
   h += '</article>';
   return h;
 }
@@ -441,14 +513,171 @@ function bindFeed(root) {
     };
   }
 
-  // кнопка «ответить» — просто тост
+  // кнопка «ответить» — раскрывает список
   var replyBtns = root.querySelectorAll(".pact-reply");
   for (var rb = 0; rb < replyBtns.length; rb++) {
     replyBtns[rb].onclick = function(e) {
       e.stopPropagation();
-      toast("еще не доделал");
+      var pid = parseInt(this.getAttribute("data-reply"), 10);
+      openedReplies[pid] = !openedReplies[pid];
+      redraw(pid);
+      if (openedReplies[pid]) {
+        setTimeout(function() {
+          var input = document.querySelector('.reply-input[data-pid="' + pid + '"]');
+          if (input) input.focus();
+        }, 60);
+      }
     };
   }
+
+  // toggle заголовка ответов
+  var replyToggles = root.querySelectorAll(".replies-toggle");
+  for (var rt = 0; rt < replyToggles.length; rt++) {
+    replyToggles[rt].onclick = function(e) {
+      e.stopPropagation();
+      var pid = parseInt(this.getAttribute("data-pid"), 10);
+      openedReplies[pid] = !openedReplies[pid];
+      redraw(pid);
+    };
+  }
+
+  // отправка своего ответа (кнопка)
+  var replySends = root.querySelectorAll(".reply-send");
+  for (var rs = 0; rs < replySends.length; rs++) {
+    replySends[rs].onclick = function(e) {
+      e.stopPropagation();
+      sendReply(parseInt(this.getAttribute("data-pid"), 10), root);
+    };
+  }
+
+  // Enter в поле ответа
+  var replyInputs = root.querySelectorAll(".reply-input");
+  for (var ri = 0; ri < replyInputs.length; ri++) {
+    replyInputs[ri].onkeydown = function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        sendReply(parseInt(this.getAttribute("data-pid"), 10), root);
+      }
+    };
+  }
+
+  // закладки
+  var bms = root.querySelectorAll(".pact-bookmark");
+  for (var b = 0; b < bms.length; b++) {
+    bms[b].onclick = function(e) {
+      e.stopPropagation();
+      var id = parseInt(this.closest(".post").getAttribute("data-id"), 10);
+      if (bookmarks[id]) {
+        delete bookmarks[id];
+        toast("Убрано из закладок");
+      } else {
+        bookmarks[id] = true;
+        toast("Добавлено в закладки");
+      }
+      save();
+      redraw(id);
+    };
+  }
+
+  // поделиться
+  var shares = root.querySelectorAll(".pact-share");
+  for (var s = 0; s < shares.length; s++) {
+    shares[s].onclick = function(e) {
+      e.stopPropagation();
+      var id = parseInt(this.closest(".post").getAttribute("data-id"), 10);
+      sharePost(id);
+    };
+  }
+}
+
+function plural(n, one, few, many) {
+  var m100 = n % 100;
+  if (m100 >= 11 && m100 <= 19) return many;
+  var m10 = n % 10;
+  if (m10 === 1) return one;
+  if (m10 >= 2 && m10 <= 4) return few;
+  return many;
+}
+
+function replyHTML(r) {
+  var ru = getU(r.u);
+  if (!ru) return "";
+  return '<div class="reply">' +
+    avatarHTML(ru, "r-av") +
+    '<div class="r-body">' +
+      '<div class="r-top">' +
+        '<span class="r-name">' + ru.name + '</span>' +
+        '<span class="r-nick">' + ru.nick + ' · ' + r.time + '</span>' +
+      '</div>' +
+      '<div class="r-text">' + fmt(r.t) + '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function repliesHTML(pid) {
+  var base = postReplies[pid] || [];
+  var mine = myReplies[pid] || [];
+  var total = base.length + mine.length;
+  if (!total) return "";
+
+  var opened = openedReplies[pid] === true;
+  var word = plural(total, "ответ", "ответа", "ответов");
+
+  var h = '<div class="replies-block' + (opened ? " on" : "") + '" data-pid="' + pid + '">';
+  h += '<button class="replies-toggle" data-pid="' + pid + '">' +
+       '💬 ' + (opened ? "Скрыть" : "Показать") + ' ' + total + ' ' + word +
+       '</button>';
+  h += '<div class="replies-list">';
+  for (var i = 0; i < base.length; i++) h += replyHTML(base[i]);
+  for (var j = 0; j < mine.length; j++) h += replyHTML(mine[j]);
+
+  h += '<div class="reply-form">' +
+         avatarHTML(ME, "r-av") +
+         '<input class="reply-input" type="text" placeholder="Написать ответ…" data-pid="' + pid + '" maxlength="200">' +
+         '<button class="reply-send" data-pid="' + pid + '">→</button>' +
+       '</div>';
+  h += '</div></div>';
+  return h;
+}
+
+function sendReply(pid, root) {
+  var input = root.querySelector('.reply-input[data-pid="' + pid + '"]');
+  if (!input) return;
+  var text = input.value.trim();
+  if (!text) return;
+  if (!myReplies[pid]) myReplies[pid] = [];
+  myReplies[pid].push({
+    id: Date.now(),
+    u: "me",
+    t: text,
+    time: "только что"
+  });
+  save();
+  openedReplies[pid] = true;
+  redraw(pid);
+  toast("Ответ отправлен");
+}
+
+function sharePost(id) {
+  var p = findPost(id);
+  if (!p) return;
+  var u = getU(p.u);
+  var text = u.name + ": " + p.t;
+  var url = window.location.href.split("#")[0] + "#post-" + id;
+
+  if (navigator.share) {
+    navigator.share({ title: "Русь.нет", text: text, url: url }).catch(function() {});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text + "\n" + url);
+    toast("Скопировано");
+  } else {
+    toast("Не удалось поделиться");
+  }
+}
+
+function openCompose() {
+  document.getElementById("composeText").value = "";
+  openOverlay("composeOverlay");
 }
 
 function findPost(id) {
@@ -936,8 +1165,43 @@ if (searchEl) {
 // ============================================================
 // прочее
 // ============================================================
-document.getElementById("fabBtn").onclick = function() {
-  toast("Еще не доделано");
+document.getElementById("fabBtn").onclick = openCompose;
+
+document.getElementById("composeCancel").onclick = function() {
+  closeOverlay("composeOverlay");
+};
+
+document.getElementById("composeSend").onclick = function() {
+  var text = document.getElementById("composeText").value.trim();
+  if (!text) { toast("Напиши хоть что-нибудь"); return; }
+
+  var newId = Date.now();
+  myPosts.unshift({
+    id: newId,
+    u: "me",
+    time: "только что",
+    likes: 0,
+    reposts: 0,
+    replies: 0,
+    t: text
+  });
+  save();
+  closeOverlay("composeOverlay");
+  filterUser = null;
+  filterTag = null;
+  drawUsers();
+  switchView("feed");
+  switchTab("foryou");
+  drawFeed();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  toast("Опубликовано");
+};
+
+// Ctrl+Enter в поле создания поста
+document.getElementById("composeText").onkeydown = function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+    document.getElementById("composeSend").click();
+  }
 };
 
 document.getElementById("addBtn").onclick = function() {

@@ -89,7 +89,15 @@
     <div class="view view-about" id="viewAbout">
       <div class="accounts-head">О сайте</div>
       <div class="about-body">
-        <p>очень крутой сайт я хз</p>
+        <p><b>ZOV.net (Ранее Русь.нет)</b> - это проект нашей команды.</p>
+        <p>События поэмы XII века показаны в виде ленты постов. Каждый персонаж ведёт свой аккаунт — от вступления Бояна до плача Ярославны на путивльской стене.</p>
+        <p>В основе сюжета — реальные эпизоды поэмы: солнечное затмение, первая победа над половцами, роковая битва на Каяле, плен Игоря, вещий сон и «Золотое слово» Святослава, плач Ярославны.</p>
+        <p>Проект сделан командой 9 класса.</p>
+        <div class="tags">
+          <span>#СловооПолкуИгореве</span>
+          <span>#XIIвек</span>
+          <span>#литература</span>
+        </div>
       </div>
     </div>
 
@@ -179,6 +187,18 @@
     <div class="modal-actions">
       <button class="btn-ghost" id="confirmNo">Отмена</button>
       <button class="btn-danger" id="confirmYes">Сбросить</button>
+    </div>
+  </div>
+</div>
+
+<!-- модалка "написать пост" -->
+<div class="overlay" id="composeOverlay">
+  <div class="modal">
+    <div class="modal-title">Что нового, летописец?</div>
+    <textarea id="composeText" class="modal-input" placeholder="Поделись с Русью…" maxlength="280"></textarea>
+    <div class="modal-actions">
+      <button class="btn-ghost" id="composeCancel">Отмена</button>
+      <button class="btn-accent" id="composeSend">Опубликовать</button>
     </div>
   </div>
 </div>
