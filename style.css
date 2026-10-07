@@ -1179,3 +1179,118 @@ body[data-view="profile"] .fab { display: none; }
 @media (min-width: 700px) {
   .to-top { right: 24px; bottom: 24px; }
 }
+
+/* ===================== пасхалка: титры ===================== */
+.about-egg {
+  margin-top: 20px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  transition: opacity .15s, transform .12s;
+  -webkit-tap-highlight-color: transparent;
+}
+.about-egg:active { opacity: .85; transform: scale(.97); }
+
+.crawl-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: #000;
+  display: none;
+  overflow: hidden;
+}
+.crawl-overlay.on { display: block; }
+
+.crawl-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.08);
+  color: #f9d71c;
+  font-size: 26px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.crawl-close:active { background: rgba(255,255,255,.18); }
+
+.crawl-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  perspective: 420px;
+  perspective-origin: 50% 40%;
+}
+
+.crawl-scroller {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) rotateX(25deg);
+  transform-origin: 50% 100%;
+  width: 70%;
+  max-width: 720px;
+  text-align: center;
+  color: #f9d71c;
+  font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.55;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(249, 215, 28, .35);
+  animation: crawl 45s linear forwards;
+}
+
+@keyframes crawl {
+  0%   { top: 100%; }
+  100% { top: -320%; }
+}
+
+.crawl-title {
+  font-size: 42px;
+  letter-spacing: 8px;
+  margin-bottom: 26px;
+}
+.crawl-episode {
+  font-size: 18px;
+  letter-spacing: 4px;
+  margin-bottom: 22px;
+  opacity: .85;
+}
+.crawl-subtitle {
+  font-size: 26px;
+  letter-spacing: 4px;
+  line-height: 1.3;
+  margin-bottom: 70px;
+}
+.crawl-text p {
+  margin-bottom: 20px;
+  font-size: 18px;
+  letter-spacing: 2px;
+}
+.crawl-text .big {
+  font-size: 26px;
+  letter-spacing: 6px;
+  margin-top: 50px;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 500px) {
+  .crawl-scroller { width: 84%; font-size: 15px; letter-spacing: 1px; }
+  .crawl-title { font-size: 28px; letter-spacing: 5px; }
+  .crawl-episode { font-size: 14px; }
+  .crawl-subtitle { font-size: 20px; margin-bottom: 50px; }
+  .crawl-text p { font-size: 14.5px; }
+  .crawl-text .big { font-size: 20px; }
+}

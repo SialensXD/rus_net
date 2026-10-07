@@ -1692,3 +1692,123 @@ drawTrends();
 drawNotifs();
 drawTimeline();
 updateNotifBadge();
+
+// ============================================================
+// пасхалка: титры под музыку
+// ============================================================
+
+var crawlOverlay = document.getElementById("crawlOverlay");
+var crawlClose = document.getElementById("crawlClose");
+var aboutEgg = document.getElementById("aboutEgg");
+var crawlAudio = null;
+
+// фанфары через Web Audio. если положишь в audio/starwars.mp3 — сыграет он.
+function synthFanfare() {
+  try {
+    var Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    var ctx = new Ctx();
+    var now = ctx.currentTime;
+
+    // три восходящих аккорда — "та-дааам"
+    var chords = [
+      { freqs: [220, 277, 330], start: 0.0, dur: 0.55 },
+      { freqs: [277, 349, 415], start: 0.5, dur: 0.55 },
+      { freqs: [330, 415, 494], start: 1.0, dur: 2.6  }
+    ];
+
+    for (var i = 0; i < chords.length; i++) {
+      var ch = chords[i];
+      for (var j = 0; j < ch.freqs.length; j++) {
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.type = "sawtooth";
+        osc.frequency.value = ch.freqs[j];
+        osc.detune.value = (j - 1) * 4; // лёгкое расхождение для жирности
+
+        var start = now + ch.start;
+        gain.gain.setValueAtTime(0, start);
+        gain.gain.linearRampToValueAtTime(0.11, start + 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.001, start + ch.dur);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(start);
+        osc.stop(start + ch.dur);
+      }
+    }
+
+    crawlAudio = ctx;
+  } catch (e) {}
+}
+
+function playFanfare() {
+  // пробуем реальный файл, если его нет — синтезируем
+  var a = new Audio("audio/starwars.mp3");
+  a.volume = 0.7;
+  var fallbackFired = false;
+
+  function fallback() {
+    if (fallbackFired) return;
+    fallbackFired = true;
+    synthFanfare();
+  }
+
+  a.addEventListener("error", fallback);
+
+  var p = a.play();
+  if (p && p.catch) {
+    p.catch(fallback);
+  } else {
+    // старый браузер без промиса — считаем что заиграло
+    fallbackFired = true;
+  }
+
+  // если файла нет и через 350мс ничего не произошло — синтез
+  setTimeout(function() {
+    if (!fallbackFired) {
+      // файл мог начать играть, оставляем его
+      fallbackFired = true;
+    }
+  }, 350);
+
+  crawlAudio = a;
+}
+
+function openCrawl() {
+  if (!crawlOverlay) return;
+
+  // сброс анимации — чтобы при повторном открытии катилось заново
+  var scroller = crawlOverlay.querySelector(".crawl-scroller");
+  if (scroller) {
+    scroller.style.animation = "none";
+    void scroller.offsetWidth;
+    scroller.style.animation = "";
+  }
+
+  crawlOverlay.classList.add("on");
+  playFanfare();
+}
+
+function closeCrawl() {
+  if (!crawlOverlay) return;
+  crawlOverlay.classList.remove("on");
+
+  if (crawlAudio) {
+    try {
+      if (crawlAudio.pause) crawlAudio.pause();
+      if (crawlAudio.close) crawlAudio.close();
+    } catch (e) {}
+    crawlAudio = null;
+  }
+}
+
+if (aboutEgg) aboutEgg.onclick = openCrawl;
+if (crawlClose) crawlClose.onclick = closeCrawl;
+
+// Esc тоже закрывает титры
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape" && crawlOverlay && crawlOverlay.classList.contains("on")) {
+    closeCrawl();
+  }
+});
