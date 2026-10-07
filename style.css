@@ -1236,7 +1236,6 @@ body[data-view="profile"] .fab { display: none; }
   position: absolute;
   top: 100%;
   left: 50%;
-  transform: translateX(-50%);
   width: 80%;
   max-width: 720px;
   text-align: center;
@@ -1247,13 +1246,20 @@ body[data-view="profile"] .fab { display: none; }
   line-height: 1.7;
   letter-spacing: 2px;
   text-transform: uppercase;
-  text-shadow: 0 0 8px rgba(249, 215, 28, .35);
+  text-shadow: 0 0 6px rgba(249, 215, 28, .3);
+
+  /* анимация через transform — уходит на GPU, не дёргается */
+  transform: translate3d(-50%, 0, 0);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
   animation: crawl 900s linear forwards;
 }
 
 @keyframes crawl {
-  0%   { top: 100%; }
-  100% { top: -7100%; }
+  from { transform: translate3d(-50%, 0, 0); }
+  to   { transform: translate3d(-50%, -14000px, 0); }
 }
 
 .crawl-title {
