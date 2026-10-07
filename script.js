@@ -381,7 +381,7 @@ function bindFeed(root) {
   for (var rb = 0; rb < replyBtns.length; rb++) {
     replyBtns[rb].onclick = function(e) {
       e.stopPropagation();
-      toast("Ответы — во второй версии");
+      toast("еще не доделал");
     };
   }
 }
@@ -872,11 +872,11 @@ if (searchEl) {
 // прочее
 // ============================================================
 document.getElementById("fabBtn").onclick = function() {
-  toast("Посты в летописи пишут только князья");
+  toast("Еще не доделано");
 };
 
 document.getElementById("addBtn").onclick = function() {
-  toast("Подписки: пока никого");
+  toast("Еще не доделано");
 };
 
 document.addEventListener("keydown", function(e) {

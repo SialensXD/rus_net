@@ -88,7 +88,7 @@ img { max-width: 100%; display: block; }
   color: var(--accent);
   flex: 0 0 auto;
 }
-.tb-logo svg { width: 26px; height: 26px; filter: drop-shadow(0 0 8px var(--accent-soft)); }
+.tb-logo svg { width: 28px; height: 28px; }
 
 .search {
   display: block;
