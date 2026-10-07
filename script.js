@@ -70,51 +70,51 @@ var posts = [
   {
     id: 1, u: "boyan", time: "1 мая", likes: 87, reposts: 12, replies: 5,
     pinnedFor: "boyan",
-    t: "Начинаю новую песнь. Не по замыслу Боянову, а по былинам сего времени.\n\n(здесь будет текст — старик собирается с мыслями)\n\n#СловооПолкуИгореве"
+    t: "Я пидор"
   },
   {
     id: 2, u: "igor", time: "1 мая", likes: 143, reposts: 21, replies: 34,
     pinnedFor: "igor",
-    t: "Собрал дружину. Выступаем.\n\n(полный текст поста капитан напишет)\n\n#поход"
+    t: "Я тоже"
   },
   {
     id: 3, u: "vsevolod", time: "1 мая", likes: 98, reposts: 15, replies: 9,
     pinnedFor: "vsevolod",
-    t: "Брат позвал — седлаю. Куряне уже в пути.\n\n(здесь будет пост про первый бой и курян)"
+    t: "ЫЫЫЫЫЫ"
   },
   {
     id: 4, u: "svyatoslav", time: "9 мая", likes: 178, reposts: 26, replies: 19,
     pinnedFor: "svyatoslav",
-    t: "Сон странный видел. Не к добру это.\n\n(здесь будет «золотое слово» — самое важное, капитан напишет)\n\n#золотоеслово"
+    t: "Я жертва аборта"
   },
   {
     id: 5, u: "yaroslavna", time: "11 мая", likes: 512, reposts: 134, replies: 87,
     pinnedFor: "yaroslavna",
-    t: "Утро. Плачу. Жду.\n\n(здесь будет плач Ярославны)\n\n#плачЯрославны"
+    t: "Мне выбили зубы"
   },
   {
     id: 6, u: "konchak", time: "7 мая", likes: 154, reposts: 24, replies: 38,
     pinnedFor: "konchak",
-    t: "Игорь у нас. Нормальный мужик вообще-то.\n\n(здесь будет пост от половецкой стороны)"
+    t: "Я сын шлюхи"
   }
 ];
 
 var trends = [
-  { cat: "Актуально",    tag: "#СловооПолкуИгореве", cnt: "12,4 тыс. постов" },
-  { cat: "Русь · тренд", tag: "#поход",              cnt: "8,1 тыс. постов" },
-  { cat: "Русь · тренд", tag: "#затмение",           cnt: "3,7 тыс. постов" },
-  { cat: "Обсуждают",    tag: "#золотоеслово",       cnt: "5,2 тыс. постов" },
-  { cat: "Обсуждают",    tag: "#плачЯрославны",      cnt: "4,9 тыс. постов" },
-  { cat: "Половцы",      tag: "#плен",               cnt: "2,1 тыс. постов" },
-  { cat: "Половцы",      tag: "#Гзакгде",            cnt: "981 пост" }
+  { cat: "Актуально",    tag: "#подлежит редакту",       cnt: "12,4 тыс. постов" },
+  { cat: "Русь", tag: "#подлежит редакту",               cnt: "8,1 тыс. постов" },
+  { cat: "Русь", tag: "#подлежит редакту",               cnt: "3,7 тыс. постов" },
+  { cat: "Обсуждают",    tag: "#подлежит редакту",       cnt: "5,2 тыс. постов" },
+  { cat: "Обсуждают",    tag: "#подлежит редакту",       cnt: "4,9 тыс. постов" },
+  { cat: "Половцы",      tag: "#подлежит редакту",       cnt: "2,1 тыс. постов" },
+  { cat: "Половцы",      tag: "#подлежит редакту,        cnt: "981 пост" }
 ];
 
 var notifs = [
-  { id: 1, type: "mention", icon: "Z", text: "<b>Боян</b> начал свою песнь и упомянул тебя.", time: "1 мая", postId: 1 },
-  { id: 2, type: "reply",   icon: "💬", text: "<b>Игорь</b> собрал дружину — а ты читаешь.", time: "1 мая", postId: 2 },
-  { id: 3, type: "repost",  icon: "↻", text: "<b>Всеволод</b> репостнул пост Игоря.", time: "1 мая", postId: 3 },
-  { id: 4, type: "like",    icon: "♥", text: "<b>Ярославна</b> и ещё 511 оценили… хотя кого это волнует, она плачет.", time: "11 мая", postId: 5 },
-  { id: 5, type: "mention", icon: "Z", text: "<b>Святослав</b> видел странный сон. Хочешь знать какой?", time: "9 мая", postId: 4 }
+  { id: 1, type: "mention", icon: "Б", text: "<b>боян</b> крутой", time: "1 мая", postId: 1 },
+  { id: 2, type: "reply",   icon: "💬", text: "<b>будет</b> отредачено", time: "1 мая", postId: 2 },
+  { id: 3, type: "repost",  icon: "↻", text: "<b>хз</b> ", time: "1 мая", postId: 3 },
+  { id: 4, type: "like",    icon: "♥", text: "<b>все будет переделанно</b> ", time: "11 мая", postId: 5 },
+  { id: 5, type: "mention", icon: "С", text: "<b>Святослав</b> чето сделал хз", time: "9 мая", postId: 4 }
 ];
 
 // ============================================================
@@ -199,36 +199,23 @@ function postHTML(p) {
   var lc = p.likes + (liked ? 1 : 0);
   var rc = p.reposts + (rep ? 1 : 0);
   var badge = verified.indexOf(p.u) !== -1 ? BADGE : "";
-  var isPinned = false;
-  if (p.pinnedFor && p.pinnedFor === p.u) isPinned = true;
+  var isPinned = p.pinnedFor && p.pinnedFor === p.u;
 
-  var h = "";
-  h += '<article class="post" data-id="' + p.id + '" data-u="' + p.u + '">';
+  var h = '<article class="post" data-id="' + p.id + '" data-u="' + p.u + '">';
+  h += '<div class="post-row">';
+  h += avatarHTML(u, "p-av");
+  h += '<div class="p-main">';
 
-  // закреп
+  // метки — ВНУТРИ колонки с текстом, рядом с аватаркой, не пересекаются с ней
   if (isPinned) {
-    h += '<div style="position:absolute;top:8px;left:16px;right:16px;">' +
-           '<div class="p-pinned">' +
-             '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2l8 8-2 2-1.5-1.5-4 4L14 22l-2-2-3-3-5 5-1-1 5-5-3-3-2-2 7.5-.5 4-4L13 4z"/></svg>' +
-             'Закреплено' +
-           '</div>' +
-         '</div>';
+    h += '<div class="p-pinned">' + PIN_SVG + 'Закреплено</div>';
   }
-
-  // если это мой цитатный пост — сверху плашка
   if (p.u === "me" && p.quoteOf) {
-    h += '<div style="position:absolute;top:8px;left:16px;"><div class="post-quote-bar">' +
+    h += '<div class="post-quote-bar">' +
            '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>' +
            'Ты цитируешь' +
-         '</div></div>';
+         '</div>';
   }
-
-  // отступ если есть закреп/плашка
-  if (isPinned || (p.u === "me" && p.quoteOf)) {
-    h += '<div style="height:18px;flex-shrink:0;"></div>';
-  }
-
-  h += avatarHTML(u, "p-av") + '<div class="p-main">';
 
   h += '<div class="p-top">' +
          '<span class="p-name" data-user="' + p.u + '">' + u.name + '</span>' +
@@ -239,7 +226,6 @@ function postHTML(p) {
 
   h += '<div class="p-text">' + fmt(p.t) + '</div>';
 
-  // встроенная цитата
   if (p.quoteOf) {
     var qp = null;
     for (var i = 0; i < posts.length; i++) {
@@ -261,42 +247,18 @@ function postHTML(p) {
     }
   }
 
-  // ответы
-  if (p.replies && p.replies.length) {
-    var repCount = p.replies.length;
-    h += '<div class="replies-wrap">' +
-           '<div class="replies-toggle" data-toggle="' + p.id + '">' +
-             '💬 Показать ответы (' + repCount + ')' +
-           '</div>' +
-           '<div class="replies-list" id="replies-' + p.id + '">';
-    for (var r = 0; r < p.replies.length; r++) {
-      var rp = p.replies[r];
-      var ru = getU(rp.u);
-      h += '<div class="reply">' +
-             avatarHTML(ru, "r-av") +
-             '<div class="r-body">' +
-               '<div class="r-top">' +
-                 '<span class="r-name">' + ru.name + '</span>' +
-                 '<span class="r-nick">' + ru.nick + ' · ' + rp.time + '</span>' +
-               '</div>' +
-               '<div class="r-text">' + fmt(rp.t) + '</div>' +
-             '</div>' +
-           '</div>';
-    }
-    h += '</div></div>';
-  }
-
-  // кнопки
   h += '<div class="p-actions">' +
-         '<button class="pact pact-reply"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20.5c5.25 0 9.5-4.25 9.5-9.5S17.25 1.5 12 1.5 2.5 5.75 2.5 11c0 1.9.55 3.68 1.5 5.17L3 22l5.8-1.5c.99.32 2.07.5 3.2.5z"/></svg><span class="cnt">' + short(p.replies ? p.replies.length : 0) + '</span></button>' +
+         '<button class="pact pact-reply"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20.5c5.25 0 9.5-4.25 9.5-9.5S17.25 1.5 12 1.5 2.5 5.75 2.5 11c0 1.9.55 3.68 1.5 5.17L3 22l5.8-1.5c.99.32 2.07.5 3.2.5z"/></svg><span class="cnt">' + short(p.replies || 0) + '</span></button>' +
          '<button class="pact pact-repost' + (rep ? " on" : "") + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7v8a3 3 0 0 0 3 3h9"/><polyline points="14 15 17 18 14 21"/><path d="M20 17V9a3 3 0 0 0-3-3H8"/><polyline points="10 3 7 6 10 9"/></svg><span class="cnt">' + short(rc) + '</span></button>' +
-         '<button class="pact pact-like' + (liked ? " on" : "") + '"><svg viewBox="0 0 24 24" fill="' + (liked ? "currentColor" : "none") + '" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-8-5.2-8-11a4.5 4.5 0 0 1 8-2.9A4.5 4.5 0 0 1 20 10c0 5.8-8 11-8 11z"/></svg><span class="cnt" data-cnt="like-' + p.id + '">' + short(lc) + '</span></button>' +
+         '<button class="pact pact-like' + (liked ? " on" : "") + '"><svg viewBox="0 0 24 24" fill="' + (liked ? "currentColor" : "none") + '" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-8-5.2-8-11a4.5 4.5 0 0 1 8-2.9A4.5 4.5 0 0 1 20 10c0 5.8-8 11-8 11z"/></svg><span class="cnt">' + short(lc) + '</span></button>' +
          '<button class="pact pact-views"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="12" width="3.5" height="9" rx="1"/><rect x="10.2" y="6" width="3.5" height="15" rx="1"/><rect x="17.5" y="9" width="3.5" height="12" rx="1"/></svg><span class="cnt">' + short(viewsFor(p)) + '</span></button>' +
          '<button class="pact pact-bookmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4.5L5 21V4a1 1 0 0 1 1-1z"/></svg></button>' +
          '<button class="pact pact-share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><polyline points="6 9 12 3 18 9"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg></button>' +
        '</div>';
 
-  h += '</div></article>';
+  h += '</div>';   // p-main
+  h += '</div>';   // post-row
+  h += '</article>';
   return h;
 }
 
@@ -309,7 +271,7 @@ function drawFeed() {
   var shown = 0;
 
   if (currentTab === "following" && !filterUser) {
-    out = '<div class="empty"><span class="em">📜</span><b>Ты пока никого не читаешь</b>Зайди в «Люди» и выбери аккаунт.</div>';
+    out = '<div class="empty"><span class="em">📜</span><b>Ты никого не читаешь</b>Зайди в "Люди" и выбери аккаунт.</div>';
     document.getElementById("feed").innerHTML = out;
     return;
   }
@@ -583,7 +545,7 @@ function renderProfile() {
            (u.joined ? '<span>🗓 ' + u.joined + '</span>' : '') +
          '</div>' +
          '<div class="profile-stats">' +
-           '<span><b>' + userPosts.length + '</b> постов</span>' +
+           '<span><b>' + userPosts.length + '</b> пост</span>' +
            '<span><b>' + short(totalLikes) + '</b> лайков</span>' +
            '<span><b>' + short(totalReposts) + '</b> репостов</span>' +
          '</div>' +
@@ -882,7 +844,7 @@ document.getElementById("confirmYes").onclick = function() {
 };
 
 document.getElementById("resetBtn").onclick = function() {
-  showConfirm("Сбросить?", "Все твои лайки и репосты обнулятся. Точно?", function() {
+  showConfirm("Сбросить?", "все твои лайки и репосты обнулятся ", function() {
     likes = {};
     reposts = {};
     save();
@@ -919,11 +881,11 @@ if (searchEl) {
 // прочее
 // ============================================================
 document.getElementById("fabBtn").onclick = function() {
-  toast("Посты в летописи пишут только князья");
+  toast("нахуя тебе писать че-то");
 };
 
 document.getElementById("addBtn").onclick = function() {
-  toast("Подписки: пока никого");
+  toast("не доделал еще");
 };
 
 // клавиша Esc закрывает модалки
