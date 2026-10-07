@@ -467,15 +467,23 @@ function bindFeed(root) {
     lbs[i].onclick = function(e) {
       e.stopPropagation();
       var id = parseInt(this.closest(".post").getAttribute("data-id"), 10);
-      if (likes[id]) delete likes[id]; else likes[id] = true;
+      var wasLiked = likes[id] === true;
+      if (wasLiked) delete likes[id]; else likes[id] = true;
       save();
-      var cnt = this.querySelector(".cnt");
-      if (cnt) {
-        cnt.classList.remove("pop");
-        void cnt.offsetWidth;
-        cnt.classList.add("pop");
+      redraw(id);
+      // после перерисовки — анимация сердечка
+      if (!wasLiked) {
+        setTimeout(function() {
+          var post = document.querySelector('.post[data-id="' + id + '"]');
+          if (!post) return;
+          var btn = post.querySelector(".pact-like");
+          if (btn) {
+            btn.classList.remove("burst");
+            void btn.offsetWidth;
+            btn.classList.add("burst");
+          }
+        }, 20);
       }
-      setTimeout(function() { redraw(id); }, 200);
     };
   }
 
@@ -497,6 +505,13 @@ function bindFeed(root) {
     menus[m].onclick = function(e) {
       e.stopPropagation();
       menuPostId = parseInt(this.getAttribute("data-menu"), 10);
+      // если пост мой — показать «Удалить», иначе спрятать
+      var p = findPost(menuPostId);
+      var delBtn = document.getElementById("menuDeleteBtn");
+      if (delBtn) {
+        if (p && p.u === "me") delBtn.style.display = "flex";
+        else delBtn.style.display = "none";
+      }
       openOverlay("menuOverlay");
     };
   }
@@ -582,6 +597,25 @@ function bindFeed(root) {
     };
   }
 
+  // удаление своих ответов
+  var replyDels = root.querySelectorAll(".reply-del");
+  for (var rd = 0; rd < replyDels.length; rd++) {
+    replyDels[rd].onclick = function(e) {
+      e.stopPropagation();
+      var pid = parseInt(this.getAttribute("data-pid"), 10);
+      var rid = parseInt(this.getAttribute("data-rid"), 10);
+      showConfirm("Удалить ответ?", "Точно?", function() {
+        if (myReplies[pid]) {
+          myReplies[pid] = myReplies[pid].filter(function(r) { return r.id !== rid; });
+          if (myReplies[pid].length === 0) delete myReplies[pid];
+        }
+        save();
+        redraw(pid);
+        toast("Ответ удалён");
+      });
+    };
+  }
+
   // закладки
   var bms = root.querySelectorAll(".pact-bookmark");
   for (var b = 0; b < bms.length; b++) {
@@ -620,15 +654,19 @@ function plural(n, one, few, many) {
   return many;
 }
 
-function replyHTML(r) {
+function replyHTML(r, pid) {
   var ru = getU(r.u);
   if (!ru) return "";
+  var delBtn = (r.u === "me")
+    ? '<button class="reply-del" data-rid="' + r.id + '" data-pid="' + pid + '" aria-label="удалить">×</button>'
+    : "";
   return '<div class="reply">' +
     avatarHTML(ru, "r-av") +
     '<div class="r-body">' +
       '<div class="r-top">' +
         '<span class="r-name">' + ru.name + '</span>' +
         '<span class="r-nick">' + ru.nick + ' · ' + r.time + '</span>' +
+        delBtn +
       '</div>' +
       '<div class="r-text">' + fmt(r.t) + '</div>' +
     '</div>' +
@@ -649,8 +687,8 @@ function repliesHTML(pid) {
        '💬 ' + (opened ? "Скрыть" : "Показать") + ' ' + total + ' ' + word +
        '</button>';
   h += '<div class="replies-list">';
-  for (var i = 0; i < base.length; i++) h += replyHTML(base[i]);
-  for (var j = 0; j < mine.length; j++) h += replyHTML(mine[j]);
+  for (var i = 0; i < base.length; i++) h += replyHTML(base[i], pid);
+  for (var j = 0; j < mine.length; j++) h += replyHTML(mine[j], pid);
 
   h += '<div class="reply-form">' +
          avatarHTML(ME, "r-av") +
@@ -951,6 +989,18 @@ function updateNotifBadge() {
   }
 }
 
+// ============ кнопка «наверх» ============
+var toTopBtn = document.getElementById("toTop");
+if (toTopBtn) {
+  toTopBtn.onclick = function() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  window.addEventListener("scroll", function() {
+    if (window.scrollY > 500) toTopBtn.classList.add("on");
+    else toTopBtn.classList.remove("on");
+  }, { passive: true });
+}
+
 // ============================================================
 // хронология
 // ============================================================
@@ -1164,6 +1214,26 @@ for (var mi = 0; mi < menuItems.length; mi++) {
       }
     } else if (action === "report") {
       toast("Жалоба отправлена в Киев");
+    } else if (action === "delete") {
+      if (!pid) return;
+      var post = findPost(pid);
+      if (!post || post.u !== "me") return;
+      showConfirm("Удалить?", "Пост исчезнет безвозвратно. Точно?", function() {
+        for (var i = 0; i < myPosts.length; i++) {
+          if (myPosts[i].id === pid) {
+            myPosts.splice(i, 1);
+            break;
+          }
+        }
+        delete likes[pid];
+        delete reposts[pid];
+        delete bookmarks[pid];
+        delete myReplies[pid];
+        save();
+        drawFeed();
+        if (profileUser) renderProfile();
+        toast("Удалено");
+      });
     }
   };
 }

@@ -425,15 +425,6 @@ body[data-view="timeline"] .tabs { display: none; }
 .pact-like.on   { color: var(--like); }
 .pact-bookmark.on { color: var(--link); }
 
-.pact .cnt.pop {
-  animation: pop .35s ease;
-}
-@keyframes pop {
-  0%   { transform: translateY(0) scale(1); }
-  40%  { transform: translateY(-6px) scale(1.25); color: inherit; }
-  100% { transform: translateY(0) scale(1); }
-}
-
 /* ===================== ответы (комментарии) ===================== */
 .replies-block {
   margin-top: 10px;
@@ -1122,4 +1113,69 @@ body[data-view="profile"] .fab { display: none; }
   .tl-date { width: 34px; font-size: 11px; }
   .tl-dot { width: 24px; height: 24px; font-size: 12px; }
   .timeline::before { left: 26px; }
+}
+
+/* ===================== анимация лайка ===================== */
+.pact-like svg {
+  transition: transform .15s ease;
+  transform-origin: center;
+}
+.pact-like.burst svg {
+  animation: heartBurst .5s cubic-bezier(.5, 1.6, .5, 1);
+}
+@keyframes heartBurst {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.45); }
+  55%  { transform: scale(.88); }
+  75%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* ===================== кнопка «наверх» ===================== */
+.to-top {
+  position: fixed;
+  right: 16px;
+  bottom: 148px;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  color: var(--text);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 88;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity .2s, transform .2s, background .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.to-top svg { width: 20px; height: 20px; }
+.to-top.on {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.to-top:active { background: var(--bg-hover2); }
+
+/* ===================== удаление ответа ===================== */
+.reply-del {
+  margin-left: auto;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  color: var(--text-dim);
+  font-size: 16px;
+  line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background .15s, color .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.reply-del:active {
+  background: rgba(224,36,94,.15);
+  color: #e0245e;
+}
+
+/* на планшете и десктопе кнопка «наверх» чуть ниже */
+@media (min-width: 700px) {
+  .to-top { right: 24px; bottom: 24px; }
 }
