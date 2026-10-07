@@ -1717,6 +1717,11 @@ function synthFanfare() {
       { freqs: [330, 415, 494], start: 1.0, dur: 2.6  }
     ];
 
+    // мастер-громкость всей синтезированной темы
+    var master = ctx.createGain();
+    master.gain.value = 0.9;
+    master.connect(ctx.destination);
+
     for (var i = 0; i < chords.length; i++) {
       var ch = chords[i];
       for (var j = 0; j < ch.freqs.length; j++) {
@@ -1724,15 +1729,15 @@ function synthFanfare() {
         var gain = ctx.createGain();
         osc.type = "sawtooth";
         osc.frequency.value = ch.freqs[j];
-        osc.detune.value = (j - 1) * 4; // лёгкое расхождение для жирности
+        osc.detune.value = (j - 1) * 4;
 
         var start = now + ch.start;
         gain.gain.setValueAtTime(0, start);
-        gain.gain.linearRampToValueAtTime(0.11, start + 0.04);
+        gain.gain.linearRampToValueAtTime(0.32, start + 0.04);
         gain.gain.exponentialRampToValueAtTime(0.001, start + ch.dur);
 
         osc.connect(gain);
-        gain.connect(ctx.destination);
+        gain.connect(master);
         osc.start(start);
         osc.stop(start + ch.dur);
       }
@@ -1745,7 +1750,8 @@ function synthFanfare() {
 function playFanfare() {
   // пробуем реальный файл, если его нет — синтезируем
   var a = new Audio("audio/starwars.mp3");
-  a.volume = 0.7;
+  a.volume = 1.0;
+  a.loop = false;
   var fallbackFired = false;
 
   function fallback() {
@@ -1760,16 +1766,11 @@ function playFanfare() {
   if (p && p.catch) {
     p.catch(fallback);
   } else {
-    // старый браузер без промиса — считаем что заиграло
     fallbackFired = true;
   }
 
-  // если файла нет и через 350мс ничего не произошло — синтез
   setTimeout(function() {
-    if (!fallbackFired) {
-      // файл мог начать играть, оставляем его
-      fallbackFired = true;
-    }
+    if (!fallbackFired) fallbackFired = true;
   }, 350);
 
   crawlAudio = a;

@@ -1249,12 +1249,12 @@ body[data-view="profile"] .fab { display: none; }
   letter-spacing: 2px;
   text-transform: uppercase;
   text-shadow: 0 0 8px rgba(249, 215, 28, .35);
-  animation: crawl 45s linear forwards;
+  animation: crawl 100s linear forwards;
 }
 
 @keyframes crawl {
   0%   { top: 100%; }
-  100% { top: -320%; }
+  100% { top: -900%; }
 }
 
 .crawl-title {
