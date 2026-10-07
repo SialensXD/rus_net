@@ -1,17 +1,15 @@
-// ============================================================
-// Русь.нет — данные и логика
-// ============================================================
-
 var ME = { name: "Ты", nick: "@reader", avatar: "", color: "#c0392b" };
 
+
+// аккаунты персонажей. био не трогали, оставили как было
 var users = {
   boyan: {
     name: "Боян Вещий",
     nick: "@boyan_veshchiy",
     avatar: "img/boyan.jpg",
     color: "#c9a227",
-    bio: "Я фембой",
-    location: "где-то во времени",
+    bio: "Все мои песни и рассказы называют баяном💪💪",
+    location: "где-то далеко",
     joined: "с незапамятных времён"
   },
   igor: {
@@ -19,7 +17,7 @@ var users = {
     nick: "@knyaz_igor",
     avatar: "img/igor.jpg",
     color: "#c0392b",
-    bio: "Я латентный гей",
+    bio: "Князь новгород-северский. Иду на половцев. Потом расскажу, как всё прошло.",
     location: "Путивль → Дон",
     joined: "март 1185"
   },
@@ -28,8 +26,8 @@ var users = {
     nick: "@bui_tur",
     avatar: "img/vsevolod.jpg",
     color: "#d35400",
-    bio: "смехуятина",
-    location: "в седле",
+    bio: "Буй тур. Брат Игоря. Я крутой😎😎😎",
+    location: "Дон",
     joined: "март 1185"
   },
   svyatoslav: {
@@ -37,7 +35,7 @@ var users = {
     nick: "@velikiy_kyiv",
     avatar: "img/svyatoslav.jpg",
     color: "#8e44ad",
-    bio: "да",
+    bio: "Сказал золотое слово, +1000 aura moment🥶🥶🥶",
     location: "Киев",
     joined: "с давних пор"
   },
@@ -46,7 +44,7 @@ var users = {
     nick: "@plach_yaroslavny",
     avatar: "img/yaroslavna.jpg",
     color: "#2980b9",
-    bio: "ыыы",
+    bio: "Жена Игоря. Мой дебильный плач все никак не может выучить Влад, позорище🙄🙄",
     location: "Путивль",
     joined: "март 1185"
   },
@@ -55,20 +53,22 @@ var users = {
     nick: "@khan_konchak",
     avatar: "img/konchak.jpg",
     color: "#16a085",
-    bio: "крутой",
+    bio: "Хан половецкий. Тоже крутой, че сказать",
     location: "степь",
     joined: "издавна"
   }
 };
 
+// у кого "синяя галочка"
 var verified = ["igor", "vsevolod", "svyatoslav", "konchak"];
 
-// ТЕКСТЫ ГОТОВЫ. Хронология — от вступления Бояна до плача Ярославны.
+
+// сами посты. идут по порядку событий
 var posts = [
   {
     id: 1, u: "boyan", time: "1 мая", likes: 87, reposts: 12, replies: 5,
     pinnedFor: "boyan",
-    t: "Начинаю новую песнь. Не по замыслу Боянову, а по былинам сего времени. Игорю Святославичу посвящается. Долго будет, не переключайтесь.\n\n#СловооПолкуИгореве"
+    t: "Начинаю новую песнь. Не по замыслу Боянову, а по былинам сего времени. Игорю Святославичу посвящается. Долго будет, не переключайтесь!!1!11!!\n\n#СловооПолкуИгореве"
   },
   {
     id: 2, u: "igor", time: "1 мая", likes: 143, reposts: 21, replies: 34,
@@ -161,6 +161,8 @@ var posts = [
   }
 ];
 
+
+// тренды справа. чисто для атмосферы
 var trends = [
   { cat: "Актуально",     tag: "#СловооПолкуИгореве", cnt: "12,4 тыс. постов" },
   { cat: "Русь · тренд",  tag: "#золотоеслово",       cnt: "8,1 тыс. постов" },
@@ -171,77 +173,108 @@ var trends = [
   { cat: "Половцы",       tag: "#куряне",             cnt: "981 пост" }
 ];
 
+
+// уведомления. тип влияет на цвет иконки, postId — куда скроллить
 var notifs = [
-  { id: 1, type: "mention", icon: "Б", text: "<b>Боян Вещий</b> начал песнь и упомянул тебя.", time: "1 мая", postId: 1 },
-  { id: 2, type: "reply",   icon: "💬", text: "<b>Игорь</b> игнорирует затмение. Все обсуждают.", time: "1 мая", postId: 4 },
-  { id: 3, type: "repost",  icon: "↻", text: "<b>Всеволод</b> хвастается первой победой.", time: "3 мая", postId: 7 },
-  { id: 4, type: "like",    icon: "♥", text: "<b>405 человек</b> отреагировали на «Плен».", time: "7 мая", postId: 13 },
-  { id: 5, type: "mention", icon: "Z", text: "<b>Святослав</b> произносит «Золотое слово».", time: "10 мая", postId: 17 },
-  { id: 6, type: "reply",   icon: "💬", text: "<b>Ярославна</b> плачет на путивльской стене.", time: "11 мая", postId: 19 }
+  { id: 1, type: "mention", icon: "Б",  text: "<b>Боян Вещий</b> начал песнь и упомянул тебя.", time: "1 мая",  postId: 1 },
+  { id: 2, type: "reply",   icon: "💬", text: "<b>Игорь</b> игнорирует затмение. Все обсуждают.",  time: "1 мая",  postId: 4 },
+  { id: 3, type: "repost",  icon: "↻",  text: "<b>Всеволод</b> хвастается первой победой.",       time: "3 мая",  postId: 7 },
+  { id: 4, type: "like",    icon: "♥",  text: "<b>405 человек</b> отреагировали на «Плен».",      time: "7 мая",  postId: 13 },
+  { id: 5, type: "mention", icon: "Z",  text: "<b>Святослав</b> произносит «Золотое слово».",     time: "10 мая", postId: 17 },
+  { id: 6, type: "reply",   icon: "💬", text: "<b>Ярославна</b> плачет на путивльской стене.",    time: "11 мая", postId: 19 }
 ];
 
-// хронология поэмы — ключевые вехи
+
+// хронология событий поэмы.
+// postId ссылается на пост в ленте, чтобы по тапу скроллило.
+// у побега postId нет — событие за пределами нашей ленты.
 var timeline = [
-  { postId: 1,  date: "1 мая",  num: "1", title: "Вступление Бояна",           desc: "Автор отказывается от манеры старого певца и обещает рассказывать по былинам сего времени." },
-  { postId: 2,  date: "1 мая",  num: "2", title: "Сбор дружины",                desc: "Игорь собирает войско, к нему присоединяется брат Всеволод с курянами." },
-  { postId: 4,  date: "1 мая",  num: "3", title: "Солнечное затмение",          desc: "Природа предупреждает о беде. Игорь не обращает внимания на знамение.", key: true },
-  { postId: 7,  date: "3 мая",  num: "4", title: "Первая битва — победа",       desc: "Русичи разбивают передовой отряд половцев и захватывают богатую добычу." },
-  { postId: 10, date: "5 мая",  num: "5", title: "Второй день сечи",            desc: "Главные силы хана Кончака и Гзака окружают русское войско." },
-  { postId: 12, date: "6 мая",  num: "6", title: "Три дня битвы",               desc: "Всеволод ранен, но продолжает держаться. Силы русичей тают." },
-  { postId: 13, date: "7 мая",  num: "7", title: "Битва на Каяле и плен",       desc: "Израненная дружина разбита, Игорь и Всеволод попадают в плен.", key: true },
-  { postId: 16, date: "9 мая",  num: "8", title: "Вещий сон Святослава",        desc: "Великому князю киевскому снится тревожный сон, предвещающий беду." },
-  { postId: 17, date: "10 мая", num: "9", title: "«Золотое слово» Святослава",  desc: "Святослав упрекает князей в гордыне и призывает объединиться против врага.", key: true },
-  { postId: 19, date: "11 мая", num: "10", title: "Плач Ярославны",              desc: "На путивльской стене Ярославна обращается к силам природы с мольбой о муже.", key: true }
+  { postId: 1,    date: "23 апр — 1 мая", num: "1",  title: "Вступление",
+    desc: "Автор вспоминает старого певца Бояна, но решает рассказывать по делам своего времени — без прикрас." },
+
+  { postId: 2,    date: "1 мая",          num: "2",  title: "Сборы и затмение солнца",
+    desc: "Игорь собирает дружину. 1 мая 1185 года — солнечное затмение. Дурной знак, но князь идёт вперёд.", key: true },
+
+  { postId: 3,    date: "1 мая",          num: "3",  title: "Встреча с Всеволодом",
+    desc: "К Игорю присоединяется брат — курский князь Всеволод Буй Тур со своими курянами. С ними же сын Владимир и племянник Святослав." },
+
+  { postId: 6,    date: "2 мая",          num: "4",  title: "Движение по степи",
+    desc: "Дружина идёт к Дону. Волки воют, птицы свистят, гроза стонет — природа как будто предупреждает." },
+
+  { postId: 7,    date: "3 мая",          num: "5",  title: "Первая битва — победа",
+    desc: "Пятница. Русские полки разносят передовой отряд половцев, берут добычу и пленниц. Ночёвка в степи." },
+
+  { postId: 10,   date: "4–6 мая",        num: "6",  title: "Окружение и вторая битва",
+    desc: "Суббота. Половцы стягивают огромные силы — Гзак и Кончак. Три дня сечи у реки Каялы, особенно выделяется Всеволод." },
+
+  { postId: 13,   date: "7 мая",          num: "7",  title: "Поражение и плен",
+    desc: "Воскресенье, к полудню. Русские дрогнули. Игорь пытался вернуть ковуев и оказался отрезан. Все — в плену.", key: true },
+
+  { postId: 16,   date: "9 мая",          num: "8",  title: "Сон Святослава",
+    desc: "В Киеве великому князю снится тревожный сон. Вскоре бояре приносят весть о разгроме Игоря." },
+
+  { postId: 17,   date: "10 мая",         num: "9",  title: "«Золотое слово»",
+    desc: "Святослав со слезами упрекает младших князей за гордыню и призывает всю Русь к единению.", key: true },
+
+  { postId: 19,   date: "11 мая",         num: "10", title: "Плач Ярославны",
+    desc: "На стене Путивля Ярославна обращается к Ветру, Днепру и Солнцу — просит защитить мужа и его воинов.", key: true },
+
+  { postId: null, date: "дальше",         num: "11", title: "Побег Игоря",
+    desc: "В плену Игорь решает бежать. Ему помогает половчанин Овлур. В полночь князь уходит домой." }
 ];
 
-// заготовленные диалоги под ключевыми постами
+
+// заготовленные ответы под ключевыми постами.
+// мои собственные лежат в myReplies и не тут.
 var postReplies = {
   1: [
-    { id: 101, u: "igor",       t: "Спасибо, старик. Надеюсь, не зря.", time: "1 мая" },
-    { id: 102, u: "svyatoslav", t: "Знал бы ты, чем кончится...", time: "1 мая" },
-    { id: 103, u: "yaroslavna", t: "Лишь бы вернулся.", time: "1 мая" }
+    { id: 101, u: "igor",       t: "Спасибо, старик. Надеюсь, не зря.",       time: "1 мая" },
+    { id: 102, u: "svyatoslav", t: "Знал бы ты, чем кончится...",              time: "1 мая" },
+    { id: 103, u: "yaroslavna", t: "Лишь бы вернулся.",                        time: "1 мая" }
   ],
   4: [
-    { id: 201, u: "vsevolod",   t: "Да ладно, брат. Прорвёмся.", time: "1 мая" },
-    { id: 202, u: "boyan",      t: "Ох, зря-зря-зря.", time: "1 мая" },
-    { id: 203, u: "yaroslavna", t: "Игорь, вернись. Ну пожалуйста.", time: "1 мая" }
+    { id: 201, u: "vsevolod",   t: "Да ладно, брат. Прорвёмся.",              time: "1 мая" },
+    { id: 202, u: "boyan",      t: "Ох, зря-зря-зря.",                         time: "1 мая" },
+    { id: 203, u: "yaroslavna", t: "Игорь, вернись. Ну пожалуйста.",           time: "1 мая" }
   ],
   13: [
-    { id: 301, u: "yaroslavna", t: "Я чувствую. Слышишь меня?", time: "7 мая" },
-    { id: 302, u: "svyatoslav", t: "Вот к чему приводит самонадеянность.", time: "7 мая" },
-    { id: 303, u: "konchak",    t: "Он у нас. Не переживайте.", time: "7 мая" }
+    { id: 301, u: "yaroslavna", t: "Я чувствую. Слышишь меня?",                time: "7 мая" },
+    { id: 302, u: "svyatoslav", t: "Вот к чему приводит самонадеянность.",     time: "7 мая" },
+    { id: 303, u: "konchak",    t: "Он у нас. Не переживайте.",                time: "7 мая" }
   ],
   17: [
-    { id: 401, u: "igor",       t: "Понял. Прав.", time: "10 мая" },
-    { id: 402, u: "vsevolod",   t: "Признаю.", time: "10 мая" },
-    { id: 403, u: "boyan",      t: "Вот это — правильные слова.", time: "10 мая" }
+    { id: 401, u: "igor",       t: "Понял. Прав.",                             time: "10 мая" },
+    { id: 402, u: "vsevolod",   t: "Признаю.",                                  time: "10 мая" },
+    { id: 403, u: "boyan",      t: "Вот это — правильные слова.",             time: "10 мая" }
   ],
   19: [
-    { id: 501, u: "igor",       t: "Слышу. Слышу тебя.", time: "11 мая" },
-    { id: 502, u: "svyatoslav", t: "Голос её долетел до Киева.", time: "11 мая" }
+    { id: 501, u: "igor",       t: "Слышу. Слышу тебя.",                       time: "11 мая" },
+    { id: 502, u: "svyatoslav", t: "Голос её долетел до Киева.",               time: "11 мая" }
   ],
   20: [
-    { id: 601, u: "boyan",      t: "Слышали? Это голос Ярославны. Сила.", time: "11 мая" }
+    { id: 601, u: "boyan",      t: "Слышали? Это голос Ярославны. Сила.",      time: "11 мая" }
   ],
   21: [
-    { id: 701, u: "igor",       t: "Днепр, ты слышишь её...", time: "12 мая" }
+    { id: 701, u: "igor",       t: "Днепр, ты слышишь её...",                  time: "12 мая" }
   ]
 };
 
+
 // ============================================================
-// состояние
+// состояние. чё где нажато, чё сохранили
 // ============================================================
 var likes = {}, reposts = {}, bookmarks = {};
-var myPosts = [];
-var myReplies = {};
-var openedReplies = {};
-var filterUser = null;
-var filterTag = null;
+var myPosts = [];             // мои посты и цитаты
+var myReplies = {};           // мои ответы, по postId
+var openedReplies = {};       // у каких постов развёрнуты ответы
+var filterUser = null;        // фильтр по автору
+var filterTag = null;         // фильтр по тегу
 var searchQuery = "";
 var currentTab = "foryou";
 var profileUser = null;
 var menuPostId = null;
 
+// подтягиваем сохранёнку
 try {
   likes = JSON.parse(localStorage.getItem("rn_likes") || "{}");
   reposts = JSON.parse(localStorage.getItem("rn_reposts") || "{}");
@@ -249,6 +282,7 @@ try {
   bookmarks = JSON.parse(localStorage.getItem("rn_bookmarks") || "{}");
   myReplies = JSON.parse(localStorage.getItem("rn_myReplies") || "{}");
 } catch (e) {}
+
 
 function save() {
   try {
@@ -260,36 +294,61 @@ function save() {
   } catch (e) {}
 }
 
+
 // ============================================================
-// утилиты
+// мелкие помощники
 // ============================================================
+
+// экранируем < > & — иначе HTML сломается
 function esc(s) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
+
+// то же самое, плюс подкрашиваем хэштеги
 function fmt(text) {
   return esc(text).replace(/(#[A-Za-zА-Яа-яЁё0-9_]+)/g, '<span class="h" data-tag="$1">$1</span>');
 }
+
+// 1.2К вместо 1200
 function short(n) {
   if (!n) return "0";
   if (n >= 1000000) return (n / 1000000).toFixed(1).replace(".0", "") + "М";
   if (n >= 1000)    return (n / 1000).toFixed(1).replace(".0", "") + "К";
   return String(n);
 }
+
+// просмотры — просто фейковая цифра из лайков и репостов
 function viewsFor(p) {
   return Math.round((p.likes * 60 + p.reposts * 240 + (p.replies || 0) * 15) + 850);
 }
 
+// склонение: 1 ответ, 2 ответа, 5 ответов
+function plural(n, one, few, many) {
+  var m100 = n % 100;
+  if (m100 >= 11 && m100 <= 19) return many;
+  var m10 = n % 10;
+  if (m10 === 1) return one;
+  if (m10 >= 2 && m10 <= 4) return few;
+  return many;
+}
+
+
+// ---- иконки ----
 var BADGE = '<svg class="p-badge" viewBox="0 0 24 24" fill="currentColor"><path d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.66-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.68-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34zm-11.71 4.2L6.8 12.46l1.41-1.42 2.26 2.26 4.8-5.23 1.47 1.36-6.2 6.77z"/></svg>';
 
 var BADGE_SM = '<svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;color:var(--link);flex-shrink:0"><path d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.66-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.68-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34zm-11.71 4.2L6.8 12.46l1.41-1.42 2.26 2.26 4.8-5.23 1.47 1.36-6.2 6.77z"/></svg>';
 
 var PIN_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2l8 8-2 2-1.5-1.5-4 4L14 22l-2-2-3-3-5 5-1-1 5-5-3-3-2-2 7.5-.5 4-4L13 4z"/></svg>';
 
+
+// если ключ "me" — вернём себя, иначе персонажа
 function getU(key) {
   if (key === "me") return ME;
   return users[key];
 }
 
+
+// общая разметка аватарки. буква + картинка поверх, если она есть
 function avatarHTML(u, cls) {
   return '<div class="' + cls + '" style="background:' + u.color + '">' +
            '<span>' + (u.name ? u.name.charAt(0) : "?") + '</span>' +
@@ -297,6 +356,8 @@ function avatarHTML(u, cls) {
          '</div>';
 }
 
+
+// все посты: сначала мои, потом исходные. внутри — по id
 function allPosts() {
   return myPosts.concat(posts).sort(function(a, b) {
     if (a.u === "me" && b.u !== "me") return -1;
@@ -305,8 +366,9 @@ function allPosts() {
   });
 }
 
+
 // ============================================================
-// рендер поста
+// рендер одного поста
 // ============================================================
 function postHTML(p) {
   var u = getU(p.u);
@@ -326,6 +388,7 @@ function postHTML(p) {
   h += avatarHTML(u, "p-av");
   h += '<div class="p-main">';
 
+  // метки сверху: закреп или "ты цитируешь"
   if (isPinned) {
     h += '<div class="p-pinned">' + PIN_SVG + 'Закреплено</div>';
   }
@@ -336,6 +399,7 @@ function postHTML(p) {
          '</div>';
   }
 
+  // шапка поста: имя, галочка, ник, время, три точки
   h += '<div class="p-top">' +
          '<span class="p-name" data-user="' + p.u + '">' + u.name + '</span>' +
          badge +
@@ -345,6 +409,7 @@ function postHTML(p) {
 
   h += '<div class="p-text">' + fmt(p.t) + '</div>';
 
+  // если это цитата — вставляем блок с оригинальным постом
   if (p.quoteOf) {
     var qp = null;
     for (var i = 0; i < posts.length; i++) {
@@ -366,51 +431,47 @@ function postHTML(p) {
     }
   }
 
-  // ============ КНОПКИ ============
+  // кнопки под постом
   h += '<div class="p-actions">';
 
-  // ответить
   h += '<button class="pact pact-reply" data-reply="' + p.id + '">' +
          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20.5c5.25 0 9.5-4.25 9.5-9.5S17.25 1.5 12 1.5 2.5 5.75 2.5 11c0 1.9.55 3.68 1.5 5.17L3 22l5.8-1.5c.99.32 2.07.5 3.2.5z"/></svg>' +
          '<span class="cnt">' + short(replyCount || p.replies || 0) + '</span>' +
        '</button>';
 
-  // репост
   h += '<button class="pact pact-repost' + (rep ? " on" : "") + '">' +
          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7v8a3 3 0 0 0 3 3h9"/><polyline points="14 15 17 18 14 21"/><path d="M20 17V9a3 3 0 0 0-3-3H8"/><polyline points="10 3 7 6 10 9"/></svg>' +
          '<span class="cnt">' + short(rc) + '</span>' +
        '</button>';
 
-  // лайк
   h += '<button class="pact pact-like' + (liked ? " on" : "") + '">' +
          '<svg viewBox="0 0 24 24" fill="' + (liked ? "currentColor" : "none") + '" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-8-5.2-8-11a4.5 4.5 0 0 1 8-2.9A4.5 4.5 0 0 1 20 10c0 5.8-8 11-8 11z"/></svg>' +
          '<span class="cnt">' + short(lc) + '</span>' +
        '</button>';
 
-  // просмотры
   h += '<button class="pact pact-views">' +
          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="12" width="3.5" height="9" rx="1"/><rect x="10.2" y="6" width="3.5" height="15" rx="1"/><rect x="17.5" y="9" width="3.5" height="12" rx="1"/></svg>' +
          '<span class="cnt">' + short(viewsFor(p)) + '</span>' +
        '</button>';
 
-  // ЗАКЛАДКА
   h += '<button class="pact pact-bookmark' + (isBookmarked ? " on" : "") + '" aria-label="в закладки">' +
          '<svg viewBox="0 0 24 24" fill="' + (isBookmarked ? "currentColor" : "none") + '" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4.5L5 21V4a1 1 0 0 1 1-1z"/></svg>' +
        '</button>';
 
-  // поделиться
   h += '<button class="pact pact-share" aria-label="поделиться">' +
          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><polyline points="6 9 12 3 18 9"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>' +
        '</button>';
 
-  h += '</div>';   // .p-actions
+  h += '</div>';    // .p-actions
+  h += '</div>';    // .p-main
+  h += '</div>';    // .post-row
 
-  h += '</div>';   // .p-main
-  h += '</div>';   // .post-row
   h += repliesHTML(p.id);
+
   h += '</article>';
   return h;
 }
+
 
 // ============================================================
 // лента
@@ -420,6 +481,7 @@ function drawFeed() {
   var out = "";
   var shown = 0;
 
+  // "Читаю" без выбранного автора — показываем заглушку
   if (currentTab === "following" && !filterUser) {
     out = '<div class="empty"><span class="em">📜</span><b>Ты никого не читаешь</b>Зайди в «Люди» и выбери аккаунт.</div>';
     document.getElementById("feed").innerHTML = out;
@@ -428,14 +490,19 @@ function drawFeed() {
   }
 
   var list = allPosts();
+
   for (var i = 0; i < list.length; i++) {
     var p = list[i];
     if (filterUser && p.u !== filterUser) continue;
     if (filterTag && p.t.toLowerCase().indexOf(filterTag.toLowerCase()) === -1) continue;
-    if (q && p.t.toLowerCase().indexOf(q) === -1) {
+
+    if (q) {
+      var inText = p.t.toLowerCase().indexOf(q) !== -1;
       var uname = getU(p.u) ? getU(p.u).name.toLowerCase() : "";
-      if (uname.indexOf(q) === -1) continue;
+      var inName = uname.indexOf(q) !== -1;
+      if (!inText && !inName) continue;
     }
+
     out += postHTML(p);
     shown++;
   }
@@ -451,7 +518,7 @@ function drawFeed() {
   feedEl.innerHTML = out;
   bindFeed(feedEl);
 
-  // плавное появление постов с задержкой
+  // посты появляются каскадом — просто для красоты
   var postEls = feedEl.querySelectorAll(".post");
   for (var k = 0; k < postEls.length && k < 20; k++) {
     postEls[k].style.animationDelay = (k * 25) + "ms";
@@ -460,18 +527,24 @@ function drawFeed() {
   updateFilterBanner();
 }
 
+
+// тут вешаем все обработчики на посты в контейнере root
 function bindFeed(root) {
-  // лайки
+
+  // лайк — с анимацией сердечка
   var lbs = root.querySelectorAll(".pact-like");
   for (var i = 0; i < lbs.length; i++) {
     lbs[i].onclick = function(e) {
       e.stopPropagation();
       var id = parseInt(this.closest(".post").getAttribute("data-id"), 10);
       var wasLiked = likes[id] === true;
-      if (wasLiked) delete likes[id]; else likes[id] = true;
+
+      if (wasLiked) delete likes[id];
+      else likes[id] = true;
+
       save();
       redraw(id);
-      // после перерисовки — анимация сердечка
+
       if (!wasLiked) {
         setTimeout(function() {
           var post = document.querySelector('.post[data-id="' + id + '"]');
@@ -487,36 +560,36 @@ function bindFeed(root) {
     };
   }
 
-  // репосты
+  // репост
   var rbs = root.querySelectorAll(".pact-repost");
   for (var j = 0; j < rbs.length; j++) {
     rbs[j].onclick = function(e) {
       e.stopPropagation();
       var id = parseInt(this.closest(".post").getAttribute("data-id"), 10);
-      if (reposts[id]) delete reposts[id]; else reposts[id] = true;
+      if (reposts[id]) delete reposts[id];
+      else reposts[id] = true;
       save();
       redraw(id);
     };
   }
 
-  // меню "···"
+  // меню "···". если пост мой — покажем кнопку удаления
   var menus = root.querySelectorAll(".p-menu");
   for (var m = 0; m < menus.length; m++) {
     menus[m].onclick = function(e) {
       e.stopPropagation();
       menuPostId = parseInt(this.getAttribute("data-menu"), 10);
-      // если пост мой — показать «Удалить», иначе спрятать
+
       var p = findPost(menuPostId);
       var delBtn = document.getElementById("menuDeleteBtn");
       if (delBtn) {
-        if (p && p.u === "me") delBtn.style.display = "flex";
-        else delBtn.style.display = "none";
+        delBtn.style.display = (p && p.u === "me") ? "flex" : "none";
       }
       openOverlay("menuOverlay");
     };
   }
 
-  // профиль по тапу на имя/аватар
+  // тап по имени — открыть профиль
   var names = root.querySelectorAll(".p-name");
   for (var n = 0; n < names.length; n++) {
     names[n].onclick = function(e) {
@@ -524,6 +597,8 @@ function bindFeed(root) {
       openProfile(this.getAttribute("data-user"));
     };
   }
+
+  // тап по аватарке — тоже профиль
   var avs = root.querySelectorAll(".p-av");
   for (var a = 0; a < avs.length; a++) {
     avs[a].onclick = function(e) {
@@ -534,7 +609,7 @@ function bindFeed(root) {
     };
   }
 
-  // хэштеги
+  // хэштеги — фильтруют ленту
   var tags = root.querySelectorAll(".p-text .h, .q-text .h");
   for (var t = 0; t < tags.length; t++) {
     tags[t].onclick = function(e) {
@@ -549,7 +624,7 @@ function bindFeed(root) {
     };
   }
 
-  // кнопка «ответить» — раскрывает список
+  // кнопка "ответить" — раскрывает список ответов и ставит курсор в поле
   var replyBtns = root.querySelectorAll(".pact-reply");
   for (var rb = 0; rb < replyBtns.length; rb++) {
     replyBtns[rb].onclick = function(e) {
@@ -566,7 +641,7 @@ function bindFeed(root) {
     };
   }
 
-  // toggle заголовка ответов
+  // клик по "Показать N ответов"
   var replyToggles = root.querySelectorAll(".replies-toggle");
   for (var rt = 0; rt < replyToggles.length; rt++) {
     replyToggles[rt].onclick = function(e) {
@@ -577,7 +652,7 @@ function bindFeed(root) {
     };
   }
 
-  // отправка своего ответа (кнопка)
+  // отправка ответа кнопкой
   var replySends = root.querySelectorAll(".reply-send");
   for (var rs = 0; rs < replySends.length; rs++) {
     replySends[rs].onclick = function(e) {
@@ -586,7 +661,7 @@ function bindFeed(root) {
     };
   }
 
-  // Enter в поле ответа
+  // отправка ответа по Enter
   var replyInputs = root.querySelectorAll(".reply-input");
   for (var ri = 0; ri < replyInputs.length; ri++) {
     replyInputs[ri].onkeydown = function(e) {
@@ -597,7 +672,7 @@ function bindFeed(root) {
     };
   }
 
-  // удаление своих ответов
+  // удаление своих ответов — крестик рядом с ником
   var replyDels = root.querySelectorAll(".reply-del");
   for (var rd = 0; rd < replyDels.length; rd++) {
     replyDels[rd].onclick = function(e) {
@@ -634,7 +709,7 @@ function bindFeed(root) {
     };
   }
 
-  // поделиться
+  // поделиться — системный шер или копирование
   var shares = root.querySelectorAll(".pact-share");
   for (var s = 0; s < shares.length; s++) {
     shares[s].onclick = function(e) {
@@ -645,21 +720,19 @@ function bindFeed(root) {
   }
 }
 
-function plural(n, one, few, many) {
-  var m100 = n % 100;
-  if (m100 >= 11 && m100 <= 19) return many;
-  var m10 = n % 10;
-  if (m10 === 1) return one;
-  if (m10 >= 2 && m10 <= 4) return few;
-  return many;
-}
 
+// ============================================================
+// ответы
+// ============================================================
 function replyHTML(r, pid) {
   var ru = getU(r.u);
   if (!ru) return "";
+
+  // крестик удаления — только под своими ответами
   var delBtn = (r.u === "me")
     ? '<button class="reply-del" data-rid="' + r.id + '" data-pid="' + pid + '" aria-label="удалить">×</button>'
     : "";
+
   return '<div class="reply">' +
     avatarHTML(ru, "r-av") +
     '<div class="r-body">' +
@@ -672,6 +745,7 @@ function replyHTML(r, pid) {
     '</div>' +
   '</div>';
 }
+
 
 function repliesHTML(pid) {
   var base = postReplies[pid] || [];
@@ -686,6 +760,7 @@ function repliesHTML(pid) {
   h += '<button class="replies-toggle" data-pid="' + pid + '">' +
        '💬 ' + (opened ? "Скрыть" : "Показать") + ' ' + total + ' ' + word +
        '</button>';
+
   h += '<div class="replies-list">';
   for (var i = 0; i < base.length; i++) h += replyHTML(base[i], pid);
   for (var j = 0; j < mine.length; j++) h += replyHTML(mine[j], pid);
@@ -699,11 +774,13 @@ function repliesHTML(pid) {
   return h;
 }
 
+
 function sendReply(pid, root) {
   var input = root.querySelector('.reply-input[data-pid="' + pid + '"]');
   if (!input) return;
   var text = input.value.trim();
   if (!text) return;
+
   if (!myReplies[pid]) myReplies[pid] = [];
   myReplies[pid].push({
     id: Date.now(),
@@ -711,12 +788,17 @@ function sendReply(pid, root) {
     t: text,
     time: "только что"
   });
+
   save();
   openedReplies[pid] = true;
   redraw(pid);
   toast("Ответ отправлен");
 }
 
+
+// ============================================================
+// мелочи: поделиться, найти пост, перерисовать один пост
+// ============================================================
 function sharePost(id) {
   var p = findPost(id);
   if (!p) return;
@@ -734,10 +816,6 @@ function sharePost(id) {
   }
 }
 
-function openCompose() {
-  document.getElementById("composeText").value = "";
-  openOverlay("composeOverlay");
-}
 
 function findPost(id) {
   for (var i = 0; i < posts.length; i++) if (posts[i].id === id) return posts[i];
@@ -745,11 +823,15 @@ function findPost(id) {
   return null;
 }
 
+
+// заменяем только один пост, чтобы лента не дёргалась
 function redraw(id) {
   var el = document.querySelector('.post[data-id="' + id + '"]');
   if (!el) return;
+
   var p = findPost(id);
   if (!p) return;
+
   var tmp = document.createElement("div");
   tmp.innerHTML = postHTML(p);
   var fresh = tmp.firstChild;
@@ -757,12 +839,14 @@ function redraw(id) {
   bindFeed(fresh.parentNode);
 }
 
+
 // ============================================================
-// баннер фильтра
+// баннер "Фильтр: ..." над лентой
 // ============================================================
 function updateFilterBanner() {
   var el = document.getElementById("filterBanner");
   var parts = [];
+
   if (filterTag) parts.push("тег <b>" + filterTag + "</b>");
   if (filterUser && getU(filterUser)) parts.push("автор <b>" + getU(filterUser).name + "</b>");
 
@@ -771,6 +855,7 @@ function updateFilterBanner() {
     el.innerHTML = "";
     return;
   }
+
   el.classList.add("on");
   el.innerHTML = 'Фильтр: ' + parts.join(" · ") +
     '<button class="fb-close" id="fbClear">×</button>';
@@ -783,12 +868,14 @@ function updateFilterBanner() {
   };
 }
 
+
 // ============================================================
-// аккаунты
+// аккаунты — список слева (на десктопе) и во вкладке "Люди"
 // ============================================================
 function userRowHTML(key, u) {
   var on = filterUser === key ? " on" : "";
   var badge = verified.indexOf(key) !== -1 ? BADGE_SM : "";
+
   return '<div class="user-row' + on + '" data-u="' + key + '">' +
     avatarHTML(u, "u-av") +
     '<div class="u-info">' +
@@ -798,7 +885,9 @@ function userRowHTML(key, u) {
   '</div>';
 }
 
+
 function drawUsers() {
+  // первая строка — сброс фильтра
   var allRow = '<div class="user-row' + (filterUser === null ? " on" : "") + '" data-u="">' +
       '<div class="u-av" style="background:var(--bg-hover); color:var(--text-dim); font-size:12px;">все</div>' +
       '<div class="u-info">' +
@@ -810,17 +899,19 @@ function drawUsers() {
   var h = allRow;
   for (var k in users) h += userRowHTML(k, users[k]);
 
+  // у нас два места для списка — мобильный и десктопный
   var mb = document.getElementById("usersListMobile");
   var dk = document.getElementById("usersListDesktop");
   if (mb) mb.innerHTML = h;
   if (dk) dk.innerHTML = h;
 
-  // плавное появление
+  // задержка появления строк
   var allRows = document.querySelectorAll(".user-row");
   for (var z = 0; z < allRows.length && z < 20; z++) {
     allRows[z].style.animationDelay = (z * 30) + "ms";
   }
 
+  // обработчики
   var rows = document.querySelectorAll(".user-row");
   for (var i = 0; i < rows.length; i++) {
     rows[i].onclick = function() {
@@ -828,6 +919,8 @@ function drawUsers() {
       filterUser = k ? k : null;
       filterTag = null;
       drawUsers();
+
+      // если это мобильный список — сразу возвращаемся в ленту
       if (this.parentNode && this.parentNode.id === "usersListMobile") {
         switchView("feed");
         switchTab("foryou");
@@ -837,6 +930,7 @@ function drawUsers() {
     };
   }
 }
+
 
 // ============================================================
 // профиль
@@ -855,12 +949,15 @@ function closeProfile() {
   document.body.setAttribute("data-view", "feed");
 }
 
+
 function renderProfile() {
   var u = getU(profileUser);
   if (!u) return;
 
+  // собираем посты этого персонажа и считаем итоги
   var userPosts = [];
   var totalLikes = 0, totalReposts = 0;
+
   for (var i = 0; i < posts.length; i++) {
     if (posts[i].u === profileUser) {
       userPosts.push(posts[i]);
@@ -874,14 +971,18 @@ function renderProfile() {
   var isReading = filterUser === profileUser;
 
   var h = "";
+
+  // шапка с кнопкой "назад"
   h += '<div class="profile-back">' +
          '<button class="profile-back-btn" id="profBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>' +
          '<div><div class="profile-back-title">' + u.name + '</div>' +
          '<div class="profile-back-sub">' + userPosts.length + ' постов</div></div>' +
        '</div>';
 
+  // баннер-градиент в цвете персонажа
   h += '<div class="profile-banner" style="--p-color:' + u.color + '"></div>';
 
+  // инфо: аватарка, кнопка "Читать", имя, био, локация, статистика
   h += '<div class="profile-info">' +
          avatarHTML(u, "profile-av") +
          '<button class="profile-read-btn' + (isReading ? " on" : "") + '" id="profRead">' +
@@ -901,6 +1002,7 @@ function renderProfile() {
          '</div>' +
        '</div>';
 
+  // посты профиля
   if (!userPosts.length) {
     h += '<div class="empty"><span class="em">📜</span><b>Пока ничего</b>Этот персонаж ещё не опубликовал ни одного поста.</div>';
   } else {
@@ -920,6 +1022,7 @@ function renderProfile() {
 
   document.getElementById("profBack").onclick = closeProfile;
 
+  // кнопка "Читать"/"Читаю" — фильтрует ленту по автору
   document.getElementById("profRead").onclick = function() {
     if (filterUser === profileUser) {
       filterUser = null;
@@ -932,6 +1035,7 @@ function renderProfile() {
     closeProfile();
   };
 }
+
 
 // ============================================================
 // уведомления
@@ -948,6 +1052,7 @@ function drawNotifs() {
            '</div>' +
          '</div>';
   }
+
   if (!h) h = '<div class="empty"><span class="em">🔔</span><b>Тишина в эфире</b>Пока никаких событий.</div>';
 
   var el = document.getElementById("notifList");
@@ -958,6 +1063,7 @@ function drawNotifs() {
     notifEls[z].style.animationDelay = (z * 40) + "ms";
   }
 
+  // тап по уведомлению — скроллим к нужному посту и мигаем
   var items = el.querySelectorAll(".notif");
   for (var j = 0; j < items.length; j++) {
     items[j].onclick = function() {
@@ -977,6 +1083,8 @@ function drawNotifs() {
   }
 }
 
+
+// счётчик на иконке уведомлений
 function updateNotifBadge() {
   var el = document.getElementById("notifBadge");
   if (!el) return;
@@ -989,26 +1097,33 @@ function updateNotifBadge() {
   }
 }
 
-// ============ кнопка «наверх» ============
+
+// ============================================================
+// кнопка "наверх"
+// ============================================================
 var toTopBtn = document.getElementById("toTop");
 if (toTopBtn) {
   toTopBtn.onclick = function() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
   window.addEventListener("scroll", function() {
     if (window.scrollY > 500) toTopBtn.classList.add("on");
     else toTopBtn.classList.remove("on");
   }, { passive: true });
 }
 
+
 // ============================================================
 // хронология
 // ============================================================
 function drawTimeline() {
   var h = "";
+
   for (var i = 0; i < timeline.length; i++) {
     var t = timeline[i];
-    h += '<div class="tl-item' + (t.key ? " key" : "") + '" data-post="' + t.postId + '">' +
+    // data-post пустой, если пост не привязан — тогда по клику просто тост
+    h += '<div class="tl-item' + (t.key ? " key" : "") + '" data-post="' + (t.postId || "") + '">' +
            '<div class="tl-date">' + t.date + '</div>' +
            '<div class="tl-dot">' + t.num + '</div>' +
            '<div class="tl-body">' +
@@ -1017,6 +1132,7 @@ function drawTimeline() {
            '</div>' +
          '</div>';
   }
+
   var el = document.getElementById("timelineList");
   if (!el) return;
   el.innerHTML = h;
@@ -1024,8 +1140,17 @@ function drawTimeline() {
   var items = el.querySelectorAll(".tl-item");
   for (var j = 0; j < items.length; j++) {
     items[j].style.animationDelay = (j * 40) + "ms";
+
     items[j].onclick = function() {
-      var pid = parseInt(this.getAttribute("data-post"), 10);
+      var raw = this.getAttribute("data-post");
+      var pid = parseInt(raw, 10);
+
+      // нет поста — просто говорим что событие за пределами ленты
+      if (!raw || !pid) {
+        toast("Это уже за пределами ленты — но по поэме так и было");
+        return;
+      }
+
       switchView("feed");
       switchTab("foryou");
       setTimeout(function() {
@@ -1040,6 +1165,7 @@ function drawTimeline() {
   }
 }
 
+
 // ============================================================
 // тренды
 // ============================================================
@@ -1053,6 +1179,7 @@ function drawTrends() {
            '<div class="cnt">' + t.cnt + '</div>' +
          '</div>';
   }
+
   var m = document.getElementById("trendsMobile");
   var d = document.getElementById("trendsDesktop");
   if (m) m.innerHTML = h;
@@ -1063,6 +1190,7 @@ function drawTrends() {
     allTrends[z].style.animationDelay = (z * 40) + "ms";
   }
 
+  // клик по тренду = фильтр по тегу
   var all = document.querySelectorAll(".trend");
   for (var j = 0; j < all.length; j++) {
     all[j].onclick = function() {
@@ -1076,8 +1204,9 @@ function drawTrends() {
   }
 }
 
+
 // ============================================================
-// переключение вкладок
+// переключение вкладок и видов
 // ============================================================
 function switchTab(name) {
   currentTab = name;
@@ -1089,15 +1218,20 @@ function switchTab(name) {
   updateFeedTitle();
 }
 
+
+// заголовок в ленте: обычный, имя автора или поиск
 function updateFeedTitle() {
   var t = "Лента";
   if (filterUser && getU(filterUser)) t = getU(filterUser).name;
   if (filterTag) t = filterTag;
   if (searchQuery.trim()) t = "Поиск: " + searchQuery.trim();
+
   var el = document.getElementById("feedTitle");
   if (el) el.textContent = t;
 }
 
+
+// переключить экран: лента / уведы / тренды / хроно / люди / инфо / профиль
 function switchView(name) {
   var views = document.querySelectorAll(".view");
   for (var i = 0; i < views.length; i++) views[i].classList.remove("on");
@@ -1114,11 +1248,13 @@ function switchView(name) {
   var el = document.getElementById(map[name]);
   if (el) el.classList.add("on");
 
+  // подсветка нижнего меню (мобилка)
   var btns = document.querySelectorAll("#bottomNav .bn-btn");
   for (var j = 0; j < btns.length; j++) {
     btns[j].classList.toggle("on", btns[j].getAttribute("data-view") === name);
   }
 
+  // подсветка сайдбара (десктоп)
   var navs = document.querySelectorAll(".side-left .nav-item");
   for (var k = 0; k < navs.length; k++) {
     navs[k].classList.toggle("on", navs[k].getAttribute("data-view") === name);
@@ -1130,6 +1266,8 @@ function switchView(name) {
   }
 }
 
+
+// верхние табы "Свежее"/"Читаю"
 var topTabs = document.querySelectorAll("#topTabs .tab");
 for (var ti = 0; ti < topTabs.length; ti++) {
   topTabs[ti].onclick = function() {
@@ -1138,7 +1276,8 @@ for (var ti = 0; ti < topTabs.length; ti++) {
   };
 }
 
-// навигация в левом сайдбаре (десктоп)
+
+// навигация в сайдбаре (десктоп)
 var navItems = document.querySelectorAll(".side-left .nav-item");
 for (var ni = 0; ni < navItems.length; ni++) {
   navItems[ni].onclick = function() {
@@ -1148,6 +1287,8 @@ for (var ni = 0; ni < navItems.length; ni++) {
   };
 }
 
+
+// нижнее меню (мобилка)
 var bnBtns = document.querySelectorAll("#bottomNav .bn-btn");
 for (var bi = 0; bi < bnBtns.length; bi++) {
   bnBtns[bi].onclick = function() {
@@ -1157,19 +1298,23 @@ for (var bi = 0; bi < bnBtns.length; bi++) {
   };
 }
 
+
 // ============================================================
-// тема
+// тема (тёмная / светлая)
 // ============================================================
 var themeBtn = document.getElementById("themeBtn");
 themeBtn.onclick = function() {
   var cur = document.body.getAttribute("data-theme");
   var next = cur === "light" ? "dark" : "light";
   document.body.setAttribute("data-theme", next);
+
   try { localStorage.setItem("rn_theme", next); } catch (e) {}
+
   var meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.setAttribute("content", next === "light" ? "#ffffff" : "#000000");
 };
 
+// подгружаем сохранённую тему
 try {
   var savedTheme = localStorage.getItem("rn_theme");
   if (savedTheme) {
@@ -1178,6 +1323,7 @@ try {
     if (meta2) meta2.setAttribute("content", savedTheme === "light" ? "#ffffff" : "#000000");
   }
 } catch (e) {}
+
 
 // ============================================================
 // модалки
@@ -1189,6 +1335,7 @@ function closeOverlay(id) {
   document.getElementById(id).classList.remove("on");
 }
 
+// клик по фону закрывает
 var overlays = document.querySelectorAll(".overlay");
 for (var oi = 0; oi < overlays.length; oi++) {
   overlays[oi].addEventListener("click", function(e) {
@@ -1196,6 +1343,8 @@ for (var oi = 0; oi < overlays.length; oi++) {
   });
 }
 
+
+// пункты меню "···" под постом
 var menuItems = document.querySelectorAll("#menuSheet .menu-item");
 for (var mi = 0; mi < menuItems.length; mi++) {
   menuItems[mi].onclick = function() {
@@ -1206,18 +1355,22 @@ for (var mi = 0; mi < menuItems.length; mi++) {
     if (action === "quote") {
       if (!pid) return;
       openQuote(pid);
-    } else if (action === "copy") {
+    }
+    else if (action === "copy") {
       var p = findPost(pid);
       if (p) {
         if (navigator.clipboard) navigator.clipboard.writeText(p.t);
         toast("Текст скопирован");
       }
-    } else if (action === "report") {
+    }
+    else if (action === "report") {
       toast("Жалоба отправлена в Киев");
-    } else if (action === "delete") {
+    }
+    else if (action === "delete") {
       if (!pid) return;
       var post = findPost(pid);
       if (!post || post.u !== "me") return;
+
       showConfirm("Удалить?", "Пост исчезнет безвозвратно. Точно?", function() {
         for (var i = 0; i < myPosts.length; i++) {
           if (myPosts[i].id === pid) {
@@ -1238,7 +1391,10 @@ for (var mi = 0; mi < menuItems.length; mi++) {
   };
 }
 
+
+// цитата — открываем модалку и обнуляем поле
 var quoteTargetId = null;
+
 function openQuote(pid) {
   quoteTargetId = pid;
   document.getElementById("quoteText").value = "";
@@ -1252,6 +1408,7 @@ document.getElementById("quoteCancel").onclick = function() {
 document.getElementById("quoteSend").onclick = function() {
   var text = document.getElementById("quoteText").value.trim();
   if (!text) { toast("Напиши хоть что-нибудь"); return; }
+
   var newId = Date.now();
   myPosts.unshift({
     id: newId,
@@ -1263,6 +1420,7 @@ document.getElementById("quoteSend").onclick = function() {
     t: text,
     quoteOf: quoteTargetId
   });
+
   save();
   closeOverlay("quoteOverlay");
   filterUser = null;
@@ -1275,26 +1433,32 @@ document.getElementById("quoteSend").onclick = function() {
   toast("Опубликовано");
 };
 
+
 // ============================================================
-// confirm
+// своя модалка подтверждения (вместо стандартного confirm)
 // ============================================================
 var confirmCb = null;
+
 function showConfirm(title, text, cb) {
   document.getElementById("confirmTitle").textContent = title;
   document.getElementById("confirmText").textContent = text;
   confirmCb = cb;
   openOverlay("confirmOverlay");
 }
+
 document.getElementById("confirmNo").onclick = function() {
   closeOverlay("confirmOverlay");
   confirmCb = null;
 };
+
 document.getElementById("confirmYes").onclick = function() {
   closeOverlay("confirmOverlay");
   if (confirmCb) confirmCb();
   confirmCb = null;
 };
 
+
+// сброс лайков и репостов кнопкой в шапке ленты
 document.getElementById("resetBtn").onclick = function() {
   showConfirm("Сбросить?", "Все твои лайки и репосты обнулятся.", function() {
     likes = {};
@@ -1305,10 +1469,12 @@ document.getElementById("resetBtn").onclick = function() {
   });
 };
 
+
 // ============================================================
-// тост
+// тост — всплывашка снизу
 // ============================================================
 var toastTimer = null;
+
 function toast(msg) {
   var el = document.getElementById("toast");
   el.textContent = msg;
@@ -1317,10 +1483,10 @@ function toast(msg) {
   toastTimer = setTimeout(function() { el.classList.remove("on"); }, 1800);
 }
 
+
 // ============================================================
-// поиск
+// поиск. иконка-лупа в шапке, раскрывается поверх
 // ============================================================
-// ============ поиск ============
 var topbarEl = document.querySelector(".topbar");
 var searchInput = document.getElementById("search");
 var searchBtn = document.getElementById("searchBtn");
@@ -1359,10 +1525,16 @@ if (searchClear) {
   };
 }
 
+
 // ============================================================
-// прочее
+// создание своего поста — FAB
 // ============================================================
 document.getElementById("fabBtn").onclick = openCompose;
+
+function openCompose() {
+  document.getElementById("composeText").value = "";
+  openOverlay("composeOverlay");
+}
 
 document.getElementById("composeCancel").onclick = function() {
   closeOverlay("composeOverlay");
@@ -1382,6 +1554,7 @@ document.getElementById("composeSend").onclick = function() {
     replies: 0,
     t: text
   });
+
   save();
   closeOverlay("composeOverlay");
   filterUser = null;
@@ -1394,29 +1567,35 @@ document.getElementById("composeSend").onclick = function() {
   toast("Опубликовано");
 };
 
-// Ctrl+Enter в поле создания поста
+// Ctrl/Cmd+Enter отправляет пост
 document.getElementById("composeText").onkeydown = function(e) {
   if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
     document.getElementById("composeSend").click();
   }
 };
 
+
+// кнопка "добавить" в шапке — пока заглушка
 document.getElementById("addBtn").onclick = function() {
-  toast("Еще не доделано");
+  toast("Ещё не доделано");
 };
 
+
+// Esc закрывает модалки и поиск
 document.addEventListener("keydown", function(e) {
   if (e.key === "Escape") {
     var op = document.querySelectorAll(".overlay.on");
     for (var i = 0; i < op.length; i++) op[i].classList.remove("on");
+
     if (topbarEl && topbarEl.classList.contains("searching")) {
       topbarEl.classList.remove("searching");
     }
   }
 });
 
+
 // ============================================================
-// старт
+// поехали
 // ============================================================
 drawUsers();
 drawFeed();
