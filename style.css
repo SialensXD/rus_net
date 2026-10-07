@@ -1224,66 +1224,74 @@ body[data-view="profile"] .fab { display: none; }
 }
 .crawl-close:active { background: rgba(255,255,255,.18); }
 
+/* сцена — просто окно, никакой перспективы */
 .crawl-stage {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  perspective: 420px;
-  perspective-origin: 50% 40%;
 }
 
+/* сам текст. едет снизу вверх, размер не меняется */
 .crawl-scroller {
   position: absolute;
   top: 100%;
   left: 50%;
-  transform: translateX(-50%) rotateX(25deg);
-  transform-origin: 50% 100%;
-  width: 70%;
+  transform: translateX(-50%);
+  width: 80%;
   max-width: 720px;
   text-align: center;
   color: #f9d71c;
   font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
   font-weight: 700;
-  font-size: 20px;
-  line-height: 1.55;
+  font-size: 22px;
+  line-height: 1.7;
   letter-spacing: 2px;
   text-transform: uppercase;
   text-shadow: 0 0 8px rgba(249, 215, 28, .35);
-  animation: crawl 100s linear forwards;
+  animation: crawl 140s linear forwards;
 }
 
 @keyframes crawl {
   0%   { top: 100%; }
-  100% { top: -900%; }
+  100% { top: -3200%; }
 }
 
 .crawl-title {
-  font-size: 42px;
+  font-size: 48px;
   letter-spacing: 8px;
-  margin-bottom: 26px;
+  margin-bottom: 30px;
 }
 .crawl-episode {
-  font-size: 18px;
+  font-size: 20px;
   letter-spacing: 4px;
-  margin-bottom: 22px;
+  margin-bottom: 24px;
   opacity: .85;
 }
 .crawl-subtitle {
-  font-size: 26px;
+  font-size: 30px;
   letter-spacing: 4px;
   line-height: 1.3;
-  margin-bottom: 70px;
+  margin-bottom: 80px;
 }
 .crawl-text p {
-  margin-bottom: 20px;
-  font-size: 18px;
+  margin-bottom: 24px;
+  font-size: 22px;
   letter-spacing: 2px;
 }
 .crawl-text .big {
-  font-size: 26px;
+  font-size: 32px;
   letter-spacing: 6px;
-  margin-top: 50px;
-  margin-bottom: 30px;
+  margin-top: 60px;
+  margin-bottom: 34px;
+}
+
+@media (max-width: 500px) {
+  .crawl-scroller { width: 88%; font-size: 17px; line-height: 1.6; letter-spacing: 1px; }
+  .crawl-title { font-size: 34px; letter-spacing: 5px; }
+  .crawl-episode { font-size: 15px; }
+  .crawl-subtitle { font-size: 22px; margin-bottom: 60px; }
+  .crawl-text p { font-size: 17px; margin-bottom: 18px; }
+  .crawl-text .big { font-size: 24px; }
 }
 
 @media (max-width: 500px) {
