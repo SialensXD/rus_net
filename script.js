@@ -180,6 +180,20 @@ var notifs = [
   { id: 6, type: "reply",   icon: "💬", text: "<b>Ярославна</b> плачет на путивльской стене.", time: "11 мая", postId: 19 }
 ];
 
+// хронология поэмы — ключевые вехи
+var timeline = [
+  { postId: 1,  date: "1 мая",  num: "1", title: "Вступление Бояна",           desc: "Автор отказывается от манеры старого певца и обещает рассказывать по былинам сего времени." },
+  { postId: 2,  date: "1 мая",  num: "2", title: "Сбор дружины",                desc: "Игорь собирает войско, к нему присоединяется брат Всеволод с курянами." },
+  { postId: 4,  date: "1 мая",  num: "3", title: "Солнечное затмение",          desc: "Природа предупреждает о беде. Игорь не обращает внимания на знамение.", key: true },
+  { postId: 7,  date: "3 мая",  num: "4", title: "Первая битва — победа",       desc: "Русичи разбивают передовой отряд половцев и захватывают богатую добычу." },
+  { postId: 10, date: "5 мая",  num: "5", title: "Второй день сечи",            desc: "Главные силы хана Кончака и Гзака окружают русское войско." },
+  { postId: 12, date: "6 мая",  num: "6", title: "Три дня битвы",               desc: "Всеволод ранен, но продолжает держаться. Силы русичей тают." },
+  { postId: 13, date: "7 мая",  num: "7", title: "Битва на Каяле и плен",       desc: "Израненная дружина разбита, Игорь и Всеволод попадают в плен.", key: true },
+  { postId: 16, date: "9 мая",  num: "8", title: "Вещий сон Святослава",        desc: "Великому князю киевскому снится тревожный сон, предвещающий беду." },
+  { postId: 17, date: "10 мая", num: "9", title: "«Золотое слово» Святослава",  desc: "Святослав упрекает князей в гордыне и призывает объединиться против врага.", key: true },
+  { postId: 19, date: "11 мая", num: "10", title: "Плач Ярославны",              desc: "На путивльской стене Ярославна обращается к силам природы с мольбой о муже.", key: true }
+];
+
 // заготовленные диалоги под ключевыми постами
 var postReplies = {
   1: [
@@ -436,6 +450,13 @@ function drawFeed() {
   var feedEl = document.getElementById("feed");
   feedEl.innerHTML = out;
   bindFeed(feedEl);
+
+  // плавное появление постов с задержкой
+  var postEls = feedEl.querySelectorAll(".post");
+  for (var k = 0; k < postEls.length && k < 20; k++) {
+    postEls[k].style.animationDelay = (k * 25) + "ms";
+  }
+
   updateFilterBanner();
 }
 
@@ -756,6 +777,12 @@ function drawUsers() {
   if (mb) mb.innerHTML = h;
   if (dk) dk.innerHTML = h;
 
+  // плавное появление
+  var allRows = document.querySelectorAll(".user-row");
+  for (var z = 0; z < allRows.length && z < 20; z++) {
+    allRows[z].style.animationDelay = (z * 30) + "ms";
+  }
+
   var rows = document.querySelectorAll(".user-row");
   for (var i = 0; i < rows.length; i++) {
     rows[i].onclick = function() {
@@ -848,6 +875,11 @@ function renderProfile() {
   body.innerHTML = h;
   bindFeed(body);
 
+  var profilePosts = body.querySelectorAll(".post");
+  for (var z = 0; z < profilePosts.length && z < 20; z++) {
+    profilePosts[z].style.animationDelay = (z * 30) + "ms";
+  }
+
   document.getElementById("profBack").onclick = closeProfile;
 
   document.getElementById("profRead").onclick = function() {
@@ -883,6 +915,11 @@ function drawNotifs() {
   var el = document.getElementById("notifList");
   el.innerHTML = h;
 
+  var notifEls = el.querySelectorAll(".notif");
+  for (var z = 0; z < notifEls.length && z < 15; z++) {
+    notifEls[z].style.animationDelay = (z * 40) + "ms";
+  }
+
   var items = el.querySelectorAll(".notif");
   for (var j = 0; j < items.length; j++) {
     items[j].onclick = function() {
@@ -915,6 +952,45 @@ function updateNotifBadge() {
 }
 
 // ============================================================
+// хронология
+// ============================================================
+function drawTimeline() {
+  var h = "";
+  for (var i = 0; i < timeline.length; i++) {
+    var t = timeline[i];
+    h += '<div class="tl-item' + (t.key ? " key" : "") + '" data-post="' + t.postId + '">' +
+           '<div class="tl-date">' + t.date + '</div>' +
+           '<div class="tl-dot">' + t.num + '</div>' +
+           '<div class="tl-body">' +
+             '<div class="tl-title">' + t.title + '</div>' +
+             '<div class="tl-desc">' + t.desc + '</div>' +
+           '</div>' +
+         '</div>';
+  }
+  var el = document.getElementById("timelineList");
+  if (!el) return;
+  el.innerHTML = h;
+
+  var items = el.querySelectorAll(".tl-item");
+  for (var j = 0; j < items.length; j++) {
+    items[j].style.animationDelay = (j * 40) + "ms";
+    items[j].onclick = function() {
+      var pid = parseInt(this.getAttribute("data-post"), 10);
+      switchView("feed");
+      switchTab("foryou");
+      setTimeout(function() {
+        var target = document.querySelector('.post[data-id="' + pid + '"]');
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "center" });
+          target.classList.add("flash");
+          setTimeout(function() { target.classList.remove("flash"); }, 1600);
+        }
+      }, 200);
+    };
+  }
+}
+
+// ============================================================
 // тренды
 // ============================================================
 function drawTrends() {
@@ -931,6 +1007,11 @@ function drawTrends() {
   var d = document.getElementById("trendsDesktop");
   if (m) m.innerHTML = h;
   if (d) d.innerHTML = h;
+
+  var allTrends = document.querySelectorAll(".trend");
+  for (var z = 0; z < allTrends.length && z < 15; z++) {
+    allTrends[z].style.animationDelay = (z * 40) + "ms";
+  }
 
   var all = document.querySelectorAll(".trend");
   for (var j = 0; j < all.length; j++) {
@@ -975,6 +1056,7 @@ function switchView(name) {
     feed: "viewFeed",
     notifs: "viewNotifs",
     trends: "viewTrends",
+    timeline: "viewTimeline",
     accounts: "viewAccounts",
     about: "viewAbout",
     profile: "viewProfile"
@@ -985,6 +1067,11 @@ function switchView(name) {
   var btns = document.querySelectorAll("#bottomNav .bn-btn");
   for (var j = 0; j < btns.length; j++) {
     btns[j].classList.toggle("on", btns[j].getAttribute("data-view") === name);
+  }
+
+  var navs = document.querySelectorAll(".side-left .nav-item");
+  for (var k = 0; k < navs.length; k++) {
+    navs[k].classList.toggle("on", navs[k].getAttribute("data-view") === name);
   }
 
   if (name !== "profile") {
@@ -998,6 +1085,16 @@ for (var ti = 0; ti < topTabs.length; ti++) {
   topTabs[ti].onclick = function() {
     switchTab(this.getAttribute("data-tab"));
     switchView("feed");
+  };
+}
+
+// навигация в левом сайдбаре (десктоп)
+var navItems = document.querySelectorAll(".side-left .nav-item");
+for (var ni = 0; ni < navItems.length; ni++) {
+  navItems[ni].onclick = function() {
+    var v = this.getAttribute("data-view");
+    switchView(v);
+    if (v === "feed") switchTab("foryou");
   };
 }
 
@@ -1255,4 +1352,5 @@ drawUsers();
 drawFeed();
 drawTrends();
 drawNotifs();
+drawTimeline();
 updateNotifBadge();
