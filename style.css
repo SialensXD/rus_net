@@ -63,8 +63,16 @@ img { max-width: 100%; display: block; }
   -webkit-backdrop-filter: blur(12px);
   height: 53px;
   padding: 0 8px;
-  display: flex; align-items: center; gap: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   border-bottom: 1px solid var(--border);
+}
+
+.tb-left, .tb-right {
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }
 
 .tb-btn {
@@ -83,15 +91,38 @@ img { max-width: 100%; display: block; }
 [data-theme="light"] #themeBtn .ic-sun  { display: block; }
 [data-theme="light"] #themeBtn .ic-moon { display: none; }
 
+/* логотип — строго по центру */
 .tb-logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: flex; align-items: center; justify-content: center;
   color: var(--accent);
-  flex: 0 0 auto;
 }
 .tb-logo svg { width: 28px; height: 28px; }
 
-.search {
-  display: block;
+/* ============ поиск — раскрывается поверх шапки ============ */
+.search-wrap {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  align-items: center;
+  gap: 2px;
+  padding: 0 8px;
+  background: var(--topbar);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.topbar.searching .tb-left,
+.topbar.searching .tb-logo,
+.topbar.searching .tb-right { visibility: hidden; }
+.topbar.searching .search-wrap { display: flex; }
+
+.search-input {
+  flex: 1;
+  min-width: 0;
   background: var(--bg-elev);
   border: 1px solid transparent;
   border-radius: 999px;
@@ -99,13 +130,10 @@ img { max-width: 100%; display: block; }
   color: var(--text);
   font-size: 14px;
   outline: none;
-  flex: 1;
-  min-width: 0;
-  max-width: 400px;
-  margin-left: auto;
+  transition: border-color .15s, background .15s;
 }
-.search::placeholder { color: var(--text-dim); }
-.search:focus { border-color: var(--link); background: var(--bg); }
+.search-input::placeholder { color: var(--text-dim); }
+.search-input:focus { border-color: var(--link); background: var(--bg); }
 
 /* ===================== табы ===================== */
 .tabs {
@@ -766,11 +794,6 @@ body[data-view="profile"] .fab { display: none; }
 .toast.on {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
-}
-
-/* ===================== планшет ===================== */
-@media (min-width: 700px) and (max-width: 999px) {
-  .search { max-width: 300px; }
 }
 
 /* ===================== десктоп ===================== */

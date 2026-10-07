@@ -1153,12 +1153,42 @@ function toast(msg) {
 // ============================================================
 // поиск
 // ============================================================
-var searchEl = document.getElementById("search");
-if (searchEl) {
-  searchEl.oninput = function() {
+// ============ поиск ============
+var topbarEl = document.querySelector(".topbar");
+var searchInput = document.getElementById("search");
+var searchBtn = document.getElementById("searchBtn");
+var searchBack = document.getElementById("searchBack");
+var searchClear = document.getElementById("searchClear");
+
+if (searchInput) {
+  searchInput.oninput = function() {
     searchQuery = this.value;
     drawFeed();
     updateFeedTitle();
+  };
+}
+
+if (searchBtn) {
+  searchBtn.onclick = function() {
+    topbarEl.classList.add("searching");
+    setTimeout(function() { searchInput.focus(); }, 40);
+  };
+}
+
+if (searchBack) {
+  searchBack.onclick = function() {
+    topbarEl.classList.remove("searching");
+    searchInput.blur();
+  };
+}
+
+if (searchClear) {
+  searchClear.onclick = function() {
+    searchInput.value = "";
+    searchQuery = "";
+    drawFeed();
+    updateFeedTitle();
+    searchInput.focus();
   };
 }
 
@@ -1212,6 +1242,9 @@ document.addEventListener("keydown", function(e) {
   if (e.key === "Escape") {
     var op = document.querySelectorAll(".overlay.on");
     for (var i = 0; i < op.length; i++) op[i].classList.remove("on");
+    if (topbarEl && topbarEl.classList.contains("searching")) {
+      topbarEl.classList.remove("searching");
+    }
   }
 });
 
